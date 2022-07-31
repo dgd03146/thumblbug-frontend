@@ -8,6 +8,7 @@ import {
   H3Typo,
   BigRedButton
 } from "../../shared/Styles";
+import { Link } from "react-router-dom";
 
 const SignIn = (props) => {
   return (
@@ -32,9 +33,9 @@ const SignIn = (props) => {
               <span>로그인</span>
             </BigRedButton>
             <SmallTextWrapper>
-              아직 텀블벅 계정도 없냐? 하나 만들어라
+            아직 텀블벅 계정이 없으신가요?
               <span>
-                <a href="signUp">회원가입</a>
+                <Link to="../signUp">회원가입</Link>
               </span>
             </SmallTextWrapper>
           </SignInContainer>

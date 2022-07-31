@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import {
   H1Typo,
   FormInputLabel,
@@ -210,7 +211,7 @@ const SignUp = (props) => {
           >
             이미 텀블벅 계정이 있으신가요?
             <span>
-              <a href="signIn">기존 계정으로 로그인하기</a>
+              <Link to="../signIn">기존 계정으로 로그인하기</Link>
             </span>
           </SmallTextWrapper>
         </SignUpContent>

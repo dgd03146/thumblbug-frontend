@@ -18,7 +18,7 @@ function App() {
       <Container>
       {!location.pathname.startsWith("/signUp") && <Header />}
       <Routes>
-        <Route path="/" element={<SignIn />}/>
+        <Route path="/signIn" element={<SignIn />}/>
         <Route path="/signUp" element={<SignUp />}/>
       </Routes>
       </Container>
