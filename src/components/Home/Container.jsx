@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { category } from '../../data';
 import ListContainer from './ListContainer';
 
-const CategoryContainer = () => {
+const Container = () => {
   const getCategory = () => {};
 
   return (
@@ -28,7 +28,7 @@ const CategoryContainer = () => {
   );
 };
 
-export default CategoryContainer;
+export default Container;
 
 const CategoryWrapper = styled.div`
   display: flex;

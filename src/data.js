@@ -31,7 +31,13 @@ export const projects = [
     category: '카테고리',
     summary: '프로젝트 요약',
     title: '프로젝트 제목',
-    thumbnails: ['/images/test.jpg'],
+    thumbnails: [
+      '/images/test.jpg',
+      '/images/test.jpg',
+      '/images/test.jpg',
+      '/images/test.jpg',
+      '/images/test.jpg'
+    ],
     goal: '목표 금액',
     startDate: '시작 날짜',
     endDate: '종료 날짜',

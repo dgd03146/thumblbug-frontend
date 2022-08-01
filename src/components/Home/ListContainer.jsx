@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const ListContainer = () => {
   const navigate = useNavigate();
 
-  const goToDetail = (projectId) => {
-    navigate(`./project:${projectId}`);
+  const goToDetail = (it, time_difference) => {
+    navigate('/project/' + it.projectId, {
+      state: { project: it, time_difference }
+    });
   };
 
   // 남은 날짜 계산
@@ -39,7 +41,7 @@ const ListContainer = () => {
             <div>
               <ProjectCardImage
                 onClick={() => {
-                  goToDetail(it.projectId);
+                  goToDetail(it, time_difference);
                 }}
               >
                 <img src={it.thumbnails[0]} alt="thumbnails" />
@@ -53,7 +55,7 @@ const ListContainer = () => {
                   </ProjectSub>
                   <ProjectTitle
                     onClick={() => {
-                      goToDetail(it.projectId);
+                      goToDetail(it, time_difference);
                     }}
                   >
                     {it.title}

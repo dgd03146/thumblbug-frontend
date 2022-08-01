@@ -22,7 +22,7 @@ const Footer = () => {
               <p>제휴 협력</p>
             </MenuWrapper>
             <MenuWrapper>
-              <h3>텀블벅</h3>
+              <h3>정책</h3>
               <p>이용약관</p>
               <p>개인정보 처리방침</p>
               <p>프로젝트 심사 기준</p>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import CategoryContainer from '../components/Home/CategoryContainer';
+import Container from '../components/Home/Container';
 import { layoutActions } from '../redux/layout-slice';
 
 const Home = () => {
@@ -12,7 +12,7 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <CategoryContainer />
+      <Container />
     </HomeContainer>
   );
 };
