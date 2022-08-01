@@ -1,10 +1,12 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { BigRedButton } from "../../shared/Styles";
 import "./ProjectEditor.css";
 import PEDefault from "./PEDefault";
 import PEFunding from "./PEFunding";
+import PEStory from "./PEStory";
+import PEReward from "./PEReward";
+import PECreator from "./PECreator";
 
 const ProjectEditor = (props) => {
     const params = useParams()
@@ -42,18 +44,18 @@ const ProjectEditor = (props) => {
                 펀딩 계획<span>2</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={false}>
-              <Link to="../project-editor/default">
+            <PETabItem selected={params.tab === "reward"}>
+              <Link to="../project-editor/reward">
                 선물 구성<span>1</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={false}>
-              <Link to="../project-editor/default">
-                프로젝트 계획<span>6</span>
+            <PETabItem selected={params.tab === "story"}>
+              <Link to="../project-editor/story">
+                프로젝트 계획<span>1</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={false}>
-              <Link to="../project-editor/default">
+            <PETabItem selected={params.tab === "creator"}>
+              <Link to="../project-editor/creator">
                 창작자 정보<span>6</span>
               </Link>
             </PETabItem>
@@ -63,6 +65,9 @@ const ProjectEditor = (props) => {
       <PEContentContainer>
         {params.tab == "default" && <PEDefault />}
         {params.tab == "funding" && <PEFunding />}
+        {params.tab == "story" && <PEStory />}
+        {params.tab == "reward" && <PEReward />}
+        {params.tab == "creator" && <PECreator />}
       </PEContentContainer>
     </PEContainer>
   );
@@ -71,6 +76,16 @@ const ProjectEditor = (props) => {
 const PEContainer = styled.div`
   background: #fcfcfc;
   height: 100%;
+  /* &::before{
+    width: 100%;
+    height: 168px;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    background-color: #ffffff;
+    content: "";
+  } */
 `;
 
 const PEHeader = styled.div`
@@ -186,6 +201,7 @@ const CategoryWrapper = styled.div`
   -webkit-box-pack: justify;
   justify-content: space-between;
   padding: 0px 16px;
+  position: sticky;
   overflow-x: auto;
 `;
 
