@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 export const PENotice = (props) => {
@@ -42,7 +42,7 @@ export const PEFormInput = (props) => {
     <div>
       <PEInputWrapper error={error} focus={focus}>
         <span>
-          <input
+          {!props.textarea && <input
             ref={inputRef}
             onChange={(e) => {
               setCurrentLength(e.target.value.length);
@@ -55,12 +55,24 @@ export const PEFormInput = (props) => {
             maxLength={maxLength}
             placeholder={placeholder}
             min={min}
-          />{inputmode==="number" && "원"}
+          />}
+          {props.textarea && <textarea
+          ref={inputRef}
+          onChange={(e) => {
+            setCurrentLength(e.target.value.length);
+            changeHandler(e);
+          }}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+            placeholder={placeholder}
+            maxLength={maxLength}
+            />}
+          {inputmode==="numeric" && "원"}
         </span>
       </PEInputWrapper>
       <PEInputHelper error={error}>
         {error && <p>{helperText}</p>}
-        {type==="text" && <span>
+        {!type && !inputmode && <span>
           {currentLength}/{maxLength}
         </span>}
       </PEInputHelper>
@@ -288,7 +300,7 @@ export const PEInputWrapper = styled.div`
     color: rgb(13, 13, 13);
     background: rgb(255, 255, 255);
     padding: 0px 12px;
-    max-height: 44px;
+    /* max-height: 44px; */
     min-width: 100px;
     display: flex;
     font-size: 14px;
@@ -303,7 +315,7 @@ export const PEInputWrapper = styled.div`
     padding: 0px;
     background: transparent;
   }
-  input {
+  input, textarea {
     width: 100%;
     background: transparent;
     border: 0px;
@@ -318,6 +330,9 @@ export const PEInputWrapper = styled.div`
     font-size: 14px !important;
     line-height: 24px !important;
   }
+  textarea::-webkit-scrollbar {
+   display: none;
+ }
 `;
 
 export const PEInputHelper = styled.div`

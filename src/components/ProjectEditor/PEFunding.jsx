@@ -2,20 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   Asterisk,
-  ImgToolTip,
   PEForm,
   PEFormItemTitle,
   PEInfo,
   PEInfoDesc,
   PEInfoTitle,
   PEItemWrapper,
-  PEDesc,
   PENotice,
   PEFormInput,
-  PEFromWithImgToolTip,
-  TooltipWrap,
 } from "./PEStyles";
-import moment from "moment";
 
 const PEFunding = (props) => {
   const [errors, setErrors] = useState({
@@ -87,7 +82,7 @@ const PEFunding = (props) => {
             <PEFormInput
               inputRef={goalRef}
               changeHandler={handleOnChange}
-              inputmode={"number"}
+              inputmode={"numeric"}
             />
             <div className="calcbox">
               <div className="totamount">

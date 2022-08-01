@@ -9,7 +9,6 @@ import {
   PEInfoDesc,
   PEInfoTitle,
   PEItemWrapper,
-  PEDesc,
   PENotice,
   PEFormInput,
   PEFromWithImgToolTip,
@@ -314,6 +313,7 @@ const SelectorWrapper = styled.div`
   padding: 0px 18px;
   background: rgb(255, 255, 255);
   border: 1px solid rgb(240, 240, 240);
+  appearance: none;
   select 
   {
     width: 100%;
