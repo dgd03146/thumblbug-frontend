@@ -14,4 +14,11 @@ api.interceptors.request.use(function (config) {
   return config;
 });
 
+const TumblbugApis = {
+  
+}
+
+
 export const authApi = {};
+
+export default TumblbugApis
