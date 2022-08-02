@@ -56,7 +56,7 @@ const ProjectEditor = (props) => {
             </PETabItem>
             <PETabItem selected={params.tab === "creator"}>
               <Link to="../project-editor/creator">
-                창작자 정보<span>6</span>
+                창작자 정보<span>2</span>
               </Link>
             </PETabItem>
           </PETabsWrapper>

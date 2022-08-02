@@ -18,7 +18,7 @@ const PEStory = (props) => {
     const modules = {
           toolbar: {
             container: [
-              ["bold", "italic", "underline", "strike", "blockquote"],
+              ["bold", "italic", "underline", "strike"],
               [{ size: ["small", false, "large", "huge"] }, { color: [] }],
               [
                 { list: "ordered" },
