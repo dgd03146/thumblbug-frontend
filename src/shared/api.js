@@ -13,16 +13,18 @@ api.interceptors.request.use(function (config) {
 const TumblbugApis = {
   loginUser: (user) => api.post("/login", user),
   signUp: (user) => api.post("/signup", user),
-  postThumbnailUpload: (formData) => api.post("/projects/thumbnails", formData, {
+  postThumbnailUpload: (formData) => api.post("/images", formData, {
     headers: {
         "Content-type": "multipart/form-data",
     },                    
   }),
-  postStoryImageUpload: (formData) => api.post("/projects/images", formData, {
+  postStoryImageUpload: (formData) => api.post("/images", formData, {
     headers: {
       "Content-type": "multipart/form-data",
     },               
-  })
+  }),
+  deleteImages: (images) => api.delete("/images", images),
+  newPost: (post) => api.post("/projects", post)
 }
 
 

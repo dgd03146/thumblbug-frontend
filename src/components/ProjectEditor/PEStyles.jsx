@@ -34,7 +34,7 @@ export const Asterisk = (props) => {
 };
 
 export const PEFormInput = (props) => {
-  const { inputRef, inputmode, maxLength, changeHandler, helperText, placeholder, error, type, min } =
+  const { inputRef, inputmode, maxLength, changeHandler, value, helperText, placeholder, error, type, min } =
     props;
   const [currentLength, setCurrentLength] = useState(0);
   const [focus, setFocus] = useState(false);
@@ -55,6 +55,7 @@ export const PEFormInput = (props) => {
             maxLength={maxLength}
             placeholder={placeholder}
             min={min}
+            value={value}
           />}
           {props.textarea && <textarea
           ref={inputRef}
@@ -66,6 +67,7 @@ export const PEFormInput = (props) => {
           onBlur={() => setFocus(false)}
             placeholder={placeholder}
             maxLength={maxLength}
+            value={value}
             />}
           {inputmode==="numeric" && "원"}
         </span>

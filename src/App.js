@@ -8,12 +8,16 @@ import SignUp from './components/SignUp/SignUp';
 import { useLocation } from 'react-router-dom';
 import {theme} from "./shared/Styles"
 import ProjectEditor from './components/ProjectEditor/ProjectEditor';
+import axios from 'axios';
+import { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
   const location = useLocation()
+  const queryClient = new QueryClient()
   console.log(location.pathname)
-  
   return (
+    <QueryClientProvider client={queryClient}>
     <div className="App">
       <ThemeProvider theme={theme}>
       <Container>
@@ -28,6 +32,7 @@ function App() {
       </Container>
       </ThemeProvider>
     </div>
+    </QueryClientProvider>
   );
 }
 

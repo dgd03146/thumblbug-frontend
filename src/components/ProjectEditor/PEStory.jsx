@@ -11,10 +11,14 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TumblbugApis from "../../shared/api";
+import { useDispatch } from "react-redux";
+import { setPlan } from "../../redux/newPostSlice";
 
 const PEStory = (props) => {
     const QuillRef = useRef();
-    const [contents, setContents] = useState("");
+    const dispatch = useDispatch()
+    // const [contents, setContents] = useState("");
+    const {postData} = props
 
     const handleImage = () => {
         const input = document.createElement("input");
@@ -25,7 +29,7 @@ const PEStory = (props) => {
           const file = input.files[0];
           console.log(file);
           const formData = new FormData()
-          formData.append("file[]", file)
+          formData.append("file", file)
           // 현재 커서 위치 저장
           const {getEditor} = QuillRef.current
           const range = getEditor().getSelection(true);
@@ -99,8 +103,11 @@ const PEStory = (props) => {
             </div>
             <StoryEditor
                 ref={QuillRef}
+                value={postData.plan}
                 onChange={(e) => {
-                    console.log(QuillRef.current.getEditorContents());
+                    console.log(e);
+                    const data = e
+                    dispatch(setPlan(data))
                 }}
                 modules={modules}
                 theme="snow"

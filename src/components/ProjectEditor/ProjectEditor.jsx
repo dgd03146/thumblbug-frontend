@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import "./ProjectEditor.css";
@@ -7,9 +7,31 @@ import PEFunding from "./PEFunding";
 import PEStory from "./PEStory";
 import PEReward from "./PEReward";
 import PECreator from "./PECreator";
+import { useSelector } from "react-redux";
+import TumblbugApis from "../../shared/api";
+import { useMutation } from "@tanstack/react-query";
 
 const ProjectEditor = (props) => {
     const params = useParams()
+    const postData = useSelector(state => state.post)
+    const newPost = () => {
+        TumblbugApis.newPost(postData)
+    }
+    const {mutate} = useMutation(newPost)
+    // const 
+
+    // useEffect(() => {
+    //     console.log(postData);
+    // }, [postData])
+    useEffect(() => {
+        return () => {
+            const images = postData.thumbnails.map(x => x.filename)
+            console.log(images);
+            TumblbugApis.deleteImages(images).then(res => {
+                alert("오오케이")
+            })
+        }
+    }, [])
   return (
     <PEContainer>
       <PEHeader>
@@ -22,7 +44,7 @@ const ProjectEditor = (props) => {
           </HeaderLink>
         </HeaderLeft>
         <HeaderRight>
-          <HeaderButton>저장</HeaderButton>
+          <HeaderButton onClick={() => {mutate()}}>저장</HeaderButton>
         </HeaderRight>
       </PEHeader>
       <Title>프로젝트 기획</Title>
@@ -63,11 +85,11 @@ const ProjectEditor = (props) => {
         </CategoryWrapper>
       </div>
       <PEContentContainer>
-        {params.tab == "default" && <PEDefault />}
-        {params.tab == "funding" && <PEFunding />}
-        {params.tab == "story" && <PEStory />}
-        {params.tab == "reward" && <PEReward />}
-        {params.tab == "creator" && <PECreator />}
+        {params.tab == "default" && <PEDefault postData={postData}/>}
+        {params.tab == "funding" && <PEFunding postData={postData}/>}
+        {params.tab == "story" && <PEStory postData={postData}/>}
+        {params.tab == "reward" && <PEReward postData={postData}/>}
+        {params.tab == "creator" && <PECreator postData={postData}/>}
       </PEContentContainer>
     </PEContainer>
   );

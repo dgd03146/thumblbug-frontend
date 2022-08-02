@@ -8,8 +8,12 @@ import {
     PEItemWrapper,
     PEFormInput,
   } from "./PEStyles"
+  import { useDispatch } from "react-redux"
+  import { setCreatorBiography, setCreatorName } from "../../redux/newPostSlice"
 
 const PECreator = (props) => {
+    const {postData} = props
+    const dispatch = useDispatch()
     return(
         <>
         <PEItemWrapper>
@@ -26,6 +30,10 @@ const PECreator = (props) => {
           <PEFormInput
             maxLength={20}
             placeholder={"창작자님의 이름을 입력해주세요"}
+            value={postData.creatorName}
+            changeHandler={(e) => {
+                dispatch(setCreatorName(e.target.value))
+            }}
           />
         </PEForm>
       </PEItemWrapper>
@@ -43,6 +51,10 @@ const PECreator = (props) => {
           <PEFormInput
             maxLength={300}
             placeholder={"간단한 이력과 소개를 써주세요"}
+            value={postData.creatorBiography}
+            changeHandler={(e) => {
+                dispatch(setCreatorBiography(e.target.value))
+            }}
             textarea
           />
         </PEForm>

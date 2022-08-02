@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import TumblbugApis from "../../shared/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategory,
+    setSummary,
+    setTitle,
+    setThumbnails, } from "../../redux/newPostSlice";
 import {
   Asterisk,
   ImgToolTip,
@@ -17,6 +22,7 @@ import {
 } from "./PEStyles";
 
 const PEDefault = (props) => {
+
   const [errors, setErrors] = useState({
     titleError: false,
     summaryError: false,
@@ -24,11 +30,16 @@ const PEDefault = (props) => {
   const [showTitleTooltip, setShowTitleTooltip] = useState(true);
   const [showSummaryTooltip, setShowSummaryTooltip] = useState(true);
   const [showImageTooltip, setShowImageTooltip] = useState(true);
-  const [imageUrl, setImageUrl] = useState([])
+
   const categoryRef = useRef();
   const titleRef = useRef();
   const summaryRef = useRef();
   const thumbnailRef = useRef();
+
+  const dispatch = useDispatch()
+  const {postData} = props
+//   const postData = useSelector(state => state.post)
+
   const checkAll = () => {
     let newErrors = { ...errors };
     if (!titleRef.current.value) newErrors = { ...newErrors, titleError: true };
@@ -40,21 +51,33 @@ const PEDefault = (props) => {
   };
   const handleOnChange = (e) => {
     checkAll();
+    dispatch(setCategory(categoryRef.current.value))
+    dispatch(setTitle(titleRef.current.value))
+    dispatch(setSummary(summaryRef.current.value))
+    console.log(postData);
   };
   const handleImageChange = (e) => {
+    if(postData.thumbnails?.length >= 5) alert("대표 이미지는 최대 5개까지 업로드 가능합니다.")
+    else{
     let formData = new FormData();
-    for(let i = 0; i < e.target.files.length; i++){
-        console.log(e.target.files[i]);
-        formData.append("file[]", e.target.files[i])
-    }
+    formData.append("file", e.target.files[0])
     TumblbugApis.postThumbnailUpload(formData).then(res => {
-        setImageUrl(res.data)
+        if(postData.thumbnails){
+        dispatch(setThumbnails([...postData.thumbnails, res.data[0]]))}
+        else{
+            dispatch(setThumbnails([res.data[0]]))
+        }
     })
-    console.log(formData);
+    console.log(formData);}
   }
   useEffect(() => {
     checkAll();
+    console.log(postData);
   }, []);
+  useEffect(() => {
+    console.log(postData);
+    console.log(postData.rewards);
+  }, [postData])
   useEffect(() => {
     console.log(thumbnailRef);
   }, [thumbnailRef])
@@ -76,13 +99,13 @@ const PEDefault = (props) => {
         <PEForm>
           <PEFormItemTitle>카테고리</PEFormItemTitle>
           <div style={{ position: "relative" }}>
-            <SelectorWrapper ref={categoryRef}>
-              <select defaultValue={""}>
-                <option value={"game"}>게임</option>
-                <option value={"fashion"}>패션</option>
-                <option value={"culture"}>문화</option>
-                <option value={"pet"}>반려동물</option>
-                <option value={"beauty"}>뷰티</option>
+            <SelectorWrapper>
+              <select defaultValue={postData.category} ref={categoryRef} onChange={handleOnChange}>
+                <option value="game">게임</option>
+                <option value="fashion">패션</option>
+                <option value="culture">문화</option>
+                <option value="pet">반려동물</option>
+                <option value="beauty">뷰티</option>
               </select>
             </SelectorWrapper>
           </div>
@@ -128,6 +151,7 @@ const PEDefault = (props) => {
             maxLength={32}
             placeholder={"제목을 입력해주세요"}
             changeHandler={handleOnChange}
+            value={postData.title}
           />
         </PEForm>
       </PEItemWrapper>
@@ -173,6 +197,7 @@ const PEDefault = (props) => {
             placeholder={"프로젝트 요약을 입력해주세요"}
             changeHandler={handleOnChange}
             helperText={"최소 10자 이상 입력해주세요"}
+            value={postData.summary}
             large
           />
         </PEForm>
@@ -230,7 +255,7 @@ const PEDefault = (props) => {
                     </svg>
                   </div>
                 </i>
-                이미지 업로드 ({imageUrl?.length}/5)
+                이미지 업로드 ({postData.thumbnails?.length}/5)
               </span>
               <p>최소 1개, 최대 5개까지 업로드 가능</p>
               <p>
@@ -241,7 +266,7 @@ const PEDefault = (props) => {
             <input onChange={handleImageChange} ref={thumbnailRef} type="file" accept=".jpg, .jpeg, .png" multiple/>
           </ImageUploader>
           <ThumbnailWrapper>
-            {imageUrl?.map(x => {
+            {postData.thumbnails?.map(x => {
                 console.log("받아온 이미지 url들입니다.");
                 console.log(x);
                 return(
@@ -260,10 +285,10 @@ const ThumbnailWrapper = styled.div`
     display: flex;
     flex-direction: row;
     width: 100%;
+    justify-content: center;
     div{
-        min-width: 10rem;
+        width: 10rem;
         height: 10rem;
-        flex-grow: 1;
         background-size: cover;
         background-position: center;
         border: 1px solid #eee;

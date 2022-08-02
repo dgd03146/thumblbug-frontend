@@ -13,8 +13,30 @@ import {
 import moment from "moment";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useDispatch } from "react-redux";
+import { setRewards } from "../../redux/newPostSlice";
 
 const PEReward = (props) => {
+    const {postData} = props
+    const [rewardItem, setRewardItem] = useState()
+    const [fundingPrice, setFundingPrice] = useState()
+    const dispatch = useDispatch()
+
+    const rewardItemRef = useRef()
+    const fundingPriceRef = useRef()
+
+    const handleRewardItem = (e) => {
+        setRewardItem(e.target.value)
+    }
+    const handleFundingPrice = (e) => {
+        setFundingPrice(e.target.value)
+    }
+
+    console.log(postData?.rewards);
+    useEffect(() => {
+        console.log(postData?.title);
+        console.log(rewardItem, fundingPrice);
+    }, [rewardItem, fundingPrice])
   return (
     <>
       <PEItemWrapper>
@@ -24,18 +46,14 @@ const PEReward = (props) => {
             <Asterisk />
           </PEInfoTitle>
           <RewardList>
-            <li>
+            {postData?.rewards.map(x => {return (<li>
               <div>
-                <strong>1,000원</strong>
-                <span>선물 없이 후원하기</span>
+                <strong>{x.fundingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</strong>
+                <span>{x.rewardItem}</span>
               </div>
             </li>
-            <li>
-              <div>
-                <strong>1,000원</strong>
-                <span>선물 없이 후원하기</span>
-              </div>
-            </li>
+            )})}
+            
           </RewardList>
         </PEInfo>
         <PEForm>
@@ -53,12 +71,20 @@ const PEReward = (props) => {
               <PEFormItemTitle style={{ marginTop: "1em" }}>
                 선물 아이템
               </PEFormItemTitle>
-              <PEFormInput maxLength={50} />
+              <PEFormInput maxLength={50} inputRef={rewardItemRef} changeHandler={handleRewardItem}/>
               <PEFormItemTitle>최소 후원 금액</PEFormItemTitle>
-              <PEFormInput inputmode={"numeric"} />
+              <PEFormInput inputmode={"numeric"} inputRef={fundingPriceRef} changeHandler={handleFundingPrice}/>
               <ButtonWrapper>
-                <button>초기화</button>
-                <button>저장</button>
+                <button onClick={() => {
+                    rewardItemRef.current.value = ""
+                    fundingPriceRef.current.value = ""
+                }}>초기화</button>
+                <button onClick={() => {
+                    dispatch(setRewards([...postData.rewards, {
+                        rewardItem: rewardItemRef.current.value,
+                        fundingPrice: fundingPriceRef.current.value
+                    }]))
+                }}>저장</button>
               </ButtonWrapper>
             </div>
           </MakeRewardWrapper>

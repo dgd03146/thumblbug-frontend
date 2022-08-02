@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import {setGoal,
+    setStartDate,
+    setEndDate} from "../../redux/newPostSlice"
 import {
   Asterisk,
   PEForm,
@@ -17,42 +21,40 @@ const PEFunding = (props) => {
     titleError: false,
     summaryError: false,
   });
+  const {postData} = props
+  const dispatch = useDispatch()
+
+
   const goalRef = useRef();
   const startDateRef = useRef()
   const endDateRef = useRef()
-  const [goal, setGoal] = useState("0");
-  const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
-  const thumbnailRef = useRef();
-  const checkAll = () => {
-    // let newErrors = { ...errors };
-    // if (!titleRef.current.value) newErrors = { ...newErrors, titleError: true };
-    // else newErrors = { ...newErrors, titleError: false };
-    // if (summaryRef.current.value.length < 10)
-    //   newErrors = { ...newErrors, summaryError: true };
-    // else newErrors = { ...newErrors, summaryError: false };
-    // setErrors(newErrors);
-  };
+//   const [goal, setGoal] = useState("0");
+//   const [startDate, setStartDate] = useState()
+//   const [endDate, setEndDate] = useState()
   const handleOnChange = (e) => {
     let value = e.target.value;
     // value = Number(value.replaceAll(',', ''));
     // const formatValue = value.toLocaleString('ko-KR');
     value = value.replace(/[^0-9\\.]+/g, "");
     const formatValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    console.log(formatValue);
-    setGoal(formatValue);
+    // console.log(formatValue);
+    // setGoal(formatValue);
+    dispatch(setGoal(value))
     goalRef.current.value = formatValue;
   };
   const handleStartDateChange = (e) => {
-    setStartDate(e.target.value)
+    // setStartDate(e.target.value)
+    dispatch(setStartDate(e.target.value))
+    dispatch(setEndDate(e.target.value))
     console.log(e.target.value);
   }
   const handleEndDateChange = (e) => {
-    setEndDate(e.target.value)
+    dispatch(setEndDate(e.target.value))
+    // setEndDate(e.target.value)
     console.log(e.target.value);
   }
   useEffect(() => {
-    checkAll();
+    // checkAll();
   }, []);
   useEffect(() => {}, [goalRef.current?.value]);
   return (
@@ -83,16 +85,17 @@ const PEFunding = (props) => {
               inputRef={goalRef}
               changeHandler={handleOnChange}
               inputmode={"numeric"}
+              value={postData.goal}
             />
             <div className="calcbox">
               <div className="totamount">
                 <span>목표 금액 달성 시 예상 수령액</span>
-                <em>{goal}원</em>
+                <em>{postData.goal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</em>
               </div>
               <div className="feeswrap">
                 총 수수료
                 <em>
-                  {Math.floor((Number(goal?.replace(/[^0-9\\.]+/g, "")) * 0.28))
+                  {Math.floor((Number(postData.goal?.replace(/[^0-9\\.]+/g, "")) * 0.28))
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   원
@@ -101,7 +104,7 @@ const PEFunding = (props) => {
               <div className="feeswrap">
                 결제 수수료 (총 결제액의 3% + VAT)
                 <em>
-                  {Math.floor((Number(goal?.replace(/[^0-9\\.]+/g, "")) * 0.13))
+                  {Math.floor((Number(postData.goal?.replace(/[^0-9\\.]+/g, "")) * 0.13))
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   원
@@ -110,7 +113,7 @@ const PEFunding = (props) => {
               <div className="feeswrap">
                 플랫폼 수수료 (총 결제액의 5% + VAT)
                 <em>
-                  {Math.floor((Number(goal?.replace(/[^0-9\\.]+/g, "")) * 0.15))
+                  {Math.floor((Number(postData.goal?.replace(/[^0-9\\.]+/g, "")) * 0.15))
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   원
@@ -142,6 +145,7 @@ const PEFunding = (props) => {
                 min={new Date().toISOString().split('T')[0]}
                 inputRef={startDateRef}
                 changeHandler={handleStartDateChange}
+                value={postData.startDate}
                 />
                 </div>
               </div>
@@ -165,11 +169,12 @@ const PEFunding = (props) => {
             <div className="plantitle">
                 <div className="plantitlewrap">
                   <p className="plantitlep">종료일</p>
-                  {startDate && <PEFormInput 
+                  {postData.startDate && <PEFormInput 
                 type={"date"}  
-                min={startDate}
+                min={postData.startDate}
                 inputRef={endDateRef}
                 changeHandler={handleEndDateChange}
+                value={postData.endDate}
                 />}
                 </div>
               </div>
