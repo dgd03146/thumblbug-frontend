@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import TumblbugApis from "../../shared/api";
 import {
   Asterisk,
   ImgToolTip,
@@ -23,6 +24,7 @@ const PEDefault = (props) => {
   const [showTitleTooltip, setShowTitleTooltip] = useState(true);
   const [showSummaryTooltip, setShowSummaryTooltip] = useState(true);
   const [showImageTooltip, setShowImageTooltip] = useState(true);
+  const [imageUrl, setImageUrl] = useState([])
   const categoryRef = useRef();
   const titleRef = useRef();
   const summaryRef = useRef();
@@ -39,12 +41,24 @@ const PEDefault = (props) => {
   const handleOnChange = (e) => {
     checkAll();
   };
+  const handleImageChange = (e) => {
+    let formData = new FormData();
+    for(let i = 0; i < e.target.files.length; i++){
+        console.log(e.target.files[i]);
+        formData.append("file[]", e.target.files[i])
+    }
+    TumblbugApis.postThumbnailUpload(formData).then(res => {
+        setImageUrl(res.data)
+    })
+    console.log(formData);
+  }
   useEffect(() => {
     checkAll();
   }, []);
   useEffect(() => {
     console.log(thumbnailRef);
   }, [thumbnailRef])
+  
   return (
     <>
       <PEItemWrapper>
@@ -63,7 +77,7 @@ const PEDefault = (props) => {
           <PEFormItemTitle>카테고리</PEFormItemTitle>
           <div style={{ position: "relative" }}>
             <SelectorWrapper ref={categoryRef}>
-              <select>
+              <select defaultValue={""}>
                 <option value={"game"}>게임</option>
                 <option value={"fashion"}>패션</option>
                 <option value={"culture"}>문화</option>
@@ -98,12 +112,12 @@ const PEDefault = (props) => {
           </PEFormItemTitle>
           <PEFromWithImgToolTip>
             <ImgToolTip open={showTitleTooltip}>
-              <div class="title">
+              <div className="title">
                 제목은
                 <br />
                 어디에 쓰이나요?
               </div>
-              <div class="image">
+              <div className="image">
                 <img src={process.env.PUBLIC_URL + "/PE-tooltip-title.png"} />
               </div>
             </ImgToolTip>
@@ -142,12 +156,12 @@ const PEDefault = (props) => {
           </PEFormItemTitle>
           <PEFromWithImgToolTip>
             <ImgToolTip open={showSummaryTooltip}>
-              <div class="title">
+              <div className="title">
                 프로젝트 요약은
                 <br />
                 어디에 표시되나요?
               </div>
-              <div class="image">
+              <div className="image">
                 <img src={process.env.PUBLIC_URL + "/PE-tooltip-summary.png"} />
               </div>
             </ImgToolTip>
@@ -195,7 +209,7 @@ const PEDefault = (props) => {
           </PEFormItemTitle>
           <PEFromWithImgToolTip>
             <ImgToolTip open={showImageTooltip}>
-              <div class="image">
+              <div className="image">
                 <img
                   src={process.env.PUBLIC_URL + "/PE-tooltip-thumbnail.png"}
                 />
@@ -206,17 +220,17 @@ const PEDefault = (props) => {
             <div>
               <span>
                 <i>
-                  <div name="share-1" class="Icon__SVGICON-sc-1xkf9cp-0 ccxeYs">
+                  <div name="share-1" className="Icon__SVGICON-sc-1xkf9cp-0 ccxeYs">
                     <svg viewBox="0 0 48 48">
                       <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M25.9087 8.12155L36.4566 18.3158C37.2603 18.7156 38.2648 18.6156 38.968 18.3158C39.6712 17.5163 39.6712 16.4169 38.968 15.7173L25.3059 2.5247C24.6027 1.8251 23.4977 1.8251 22.7945 2.5247L9.03196 15.8172C8.32877 16.5168 8.32877 17.6162 9.03196 18.3158C9.73516 19.0154 10.9406 19.0154 11.6438 18.3158L22.2922 8.12155V28.4111C22.2922 29.4106 23.0959 30.2091 24.1005 30.2091C25.105 30.2091 25.9087 29.4106 25.9087 28.4111V8.12155ZM5.61644 29.4104C5.61644 28.4109 4.81279 27.6104 3.80822 27.6104C2.80365 27.6104 2 28.5099 2 29.5093V44.202C2 45.2015 2.80365 46 3.80822 46H44.1918C45.1963 46 46 45.2015 46 44.202V29.5093C46 28.5099 45.1963 27.7113 44.1918 27.7113C43.1872 27.7113 42.3836 28.5099 42.3836 29.5093V42.3021H5.61644V29.4104Z"
                       ></path>
                     </svg>
                   </div>
                 </i>
-                이미지 업로드 (5/5)
+                이미지 업로드 ({imageUrl?.length}/5)
               </span>
               <p>최소 1개, 최대 5개까지 업로드 가능</p>
               <p>
@@ -224,14 +238,37 @@ const PEDefault = (props) => {
               </p>
               <strong>※ 이미지를 등록하면 즉시 반영됩니다.</strong>
             </div>
-            <input ref={thumbnailRef} type="file" accept=".jpg, .jpeg, .png" multiple="" />
+            <input onChange={handleImageChange} ref={thumbnailRef} type="file" accept=".jpg, .jpeg, .png" multiple/>
           </ImageUploader>
+          <ThumbnailWrapper>
+            {imageUrl?.map(x => {
+                console.log("받아온 이미지 url들입니다.");
+                console.log(x);
+                return(
+                    <div key={x?.url} style={{backgroundImage: `url(${x?.url})`}}/>
+                )
+            })}
+          </ThumbnailWrapper>
           {/* <PEFormInput maxLength={50}/> */}
         </PEForm>
       </PEItemWrapper>
     </>
   );
 };
+
+const ThumbnailWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    div{
+        min-width: 10rem;
+        height: 10rem;
+        flex-grow: 1;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid #eee;
+    }
+`
 
 const ImageUploader = styled.div`
   width: 100%;
@@ -313,7 +350,7 @@ const SelectorWrapper = styled.div`
   padding: 0px 18px;
   background: rgb(255, 255, 255);
   border: 1px solid rgb(240, 240, 240);
-  appearance: none;
+  /* appearance: none; */
   select 
   {
     width: 100%;
@@ -324,7 +361,7 @@ const SelectorWrapper = styled.div`
     height: 100%;
     outline: none;
     margin: 0px;
-    /* appearance: none !important; */
+    appearance: none !important;
   }
 `;
 

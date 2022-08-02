@@ -10,10 +10,45 @@ import {
 } from "./PEStyles";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import TumblbugApis from "../../shared/api";
 
 const PEStory = (props) => {
     const QuillRef = useRef();
     const [contents, setContents] = useState("");
+
+    const handleImage = () => {
+        const input = document.createElement("input");
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/*");
+        input.click();
+        input.onchange = async () => {
+          const file = input.files[0];
+          console.log(file);
+          const formData = new FormData()
+          formData.append("file[]", file)
+          // 현재 커서 위치 저장
+          const {getEditor} = QuillRef.current
+          const range = getEditor().getSelection(true);
+
+          // 서버에 올려질때까지 표시할 로딩 placeholder 삽입
+          getEditor().insertEmbed(range.index, "image", `https://mir-s3-cdn-cf.behance.net/project_modules/disp/f1055231234507.564a1d234bfb6.gif`);
+
+          try {
+            let url = ""
+            const res = await TumblbugApis.postStoryImageUpload(formData)
+            url = res.data[0]?.url
+            // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
+            getEditor().deleteText(range.index, 1);
+            // 받아온 url을 이미지 태그에 삽입
+            getEditor().insertEmbed(range.index, "image", url);
+            
+            // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
+            getEditor().setSelection(range.index + 1);
+          } catch (e) {
+            getEditor().deleteText(range.index, 1);
+          }
+        };
+      };
 
     const modules = {
           toolbar: {
@@ -30,6 +65,7 @@ const PEStory = (props) => {
               ["image", "video"],
             ],
             handlers: {
+                image: handleImage
             },
           },
         };
