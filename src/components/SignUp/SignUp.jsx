@@ -10,7 +10,7 @@ import {
   SmallTextWrapper,
   CopyrightFooter,
 } from "../../shared/Styles";
-// import Logo from `${process.env.PUBLIC_URL/tumblbug_logo.svg}`
+import TumblbugApis from "../../shared/api";
 
 const SignUp = (props) => {
   const [errors, setErrors] = useState({
@@ -48,6 +48,23 @@ const SignUp = (props) => {
     if(!passwordRegEx.test(passwordRef.current.value)) newErrors = {...newErrors, passwordValidError: true}
     if(!passwordRegEx.test(passwordConfirmRef.current.value)) newErrors = {...newErrors, passwordConfirmValidError: true}
     if(passwordConfirmRef.current.value !== passwordRef.current.value) newErrors = {...newErrors, emailConfirmError: true}
+
+    if(Object.values(newErrors).filter(x => x == true).length !== 0){
+         alert("회원가입 양식을 확인해주세요")
+    }else{
+      TumblbugApis.signUp({
+        name: nameRef.current.value,
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+        confirmPassword: passwordConfirmRef.current.value
+      })
+      .then(res => {
+        alert("환영합니다!")
+      })
+      .catch(err => {
+        alert(err.data)
+      })
+    }
     setErrors({...newErrors})
   }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 // import "./SignIn.css"
 import {
@@ -9,8 +9,39 @@ import {
   BigRedButton
 } from "../../shared/Styles";
 import { Link } from "react-router-dom";
+import TumblbugApis from "../../shared/api";
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = (props) => {
+  const navigate = useNavigate()
+  const emailRef = useRef()
+  const passwordRef = useRef()
+
+  const handleLogin = () => {
+    console.log("login clicked!");
+    TumblbugApis.loginUser({email: emailRef.current.value, password: passwordRef.current.value})
+    .then(res => {
+      console.log("----login----");
+      if(res.data.token){
+        console.log(jwtDecode(res.data.token));
+        alert("로그인 성공")
+        localStorage.setItem("token", res.data.token)
+        navigate("/")
+      }
+    })
+    .catch(err => {
+      alert(err.data.message)
+    })
+  }
+
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      alert("로그인 상태입니다.")
+      navigate("/")
+    }
+  }, [])
+
   return (
     <>
       <MembershipContainer>
@@ -20,16 +51,16 @@ const SignIn = (props) => {
             <FormInputLabel>이메일 주소</FormInputLabel>
             <FormInputWrapper>
               <span className="style-signin">
-                <input type="text" placeholder="이메일 주소를 입력해주세요" />
+                <input ref={emailRef} type="text" placeholder="이메일 주소를 입력해주세요" />
               </span>
             </FormInputWrapper>
             <FormInputLabel>비밀번호</FormInputLabel>
             <FormInputWrapper>
               <span>
-                <input type="text" placeholder="비밀번호를 입력해주세요" />
+                <input ref={passwordRef} type="password" placeholder="비밀번호를 입력해주세요" />
               </span>
             </FormInputWrapper>
-            <BigRedButton>
+            <BigRedButton onClick={handleLogin}>
               <span>로그인</span>
             </BigRedButton>
             <SmallTextWrapper>
