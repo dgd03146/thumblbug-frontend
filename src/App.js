@@ -1,16 +1,22 @@
 import './App.css';
-
-import Header from './layout/Header';
 import { Routes, Route } from 'react-router-dom';
+
+import Container from './layout/Container';
+import Home from './pages/Home';
+import GlobalStyle from './styles/global';
+import Project from './pages/Project';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
+    <>
+      <GlobalStyle />
       <Routes>
-        <Route></Route>
+        <Route path="/" element={<Container />}>
+          <Route index element={<Home />} />
+          <Route path="/project/:projectId" element={<Project />} />
+        </Route>
       </Routes>
-    </div>
+    </>
   );
 }
 
