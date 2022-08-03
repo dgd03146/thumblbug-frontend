@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const Introduction = ({ project }) => {
+const Introduction = ({ project, rewardRef }) => {
   const difference = useCallback((date1, date2) => {
     const date1utc = Date.UTC(
       date1.getFullYear(),
@@ -36,16 +36,21 @@ const Introduction = ({ project }) => {
     adaptiveHeight: true
   };
 
+  // 스크롤
+  const onScrollReward = () => {
+    rewardRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <IntroductionContainer>
       <TitleContainer>
-        <Category>{project.category}</Category>
-        <Title>{project.title}</Title>
+        <Category>{project?.category}</Category>
+        <Title>{project?.title}</Title>
       </TitleContainer>
       <ProjectInfoContainer>
         <ImageWrapper>
           <StyledSlider {...settings}>
-            {project.thumbnails?.map((it, index) => (
+            {project?.thumbnails?.map((it, index) => (
               <img src={it} key={index} alt="thumbnails" />
             ))}
           </StyledSlider>
@@ -55,7 +60,7 @@ const Introduction = ({ project }) => {
             <Price>
               <div className="sec funding-count">모인금액</div>
               <span className="common funding-goal">
-                {project.totalFundingPrice}
+                {project?.totalFundingPrice}
                 <span>원</span>
               </span>
               <span>{`2743%`}</span>
@@ -63,34 +68,39 @@ const Introduction = ({ project }) => {
             <Time>
               <div className="sec">남은 시간</div>
               <div>
-                <span className="common">{time_difference}</span>일
+                <span className="common">
+                  {time_difference ? time_difference : 0}
+                </span>
+                일
               </div>
             </Time>
             <Funding>
               <div className="sec">후원자</div>
               <div className="common">
-                {project.fundingCount} <span>명</span>
+                {project?.fundingCount} <span>명</span>
               </div>
             </Funding>
           </div>
           <FundingInfo>
             <div>
               <span>목표 금액</span>
-              <span>{project.goal}원</span>
+              <span>{project?.goal}원</span>
             </div>
             <div className="funding-date">
               <span>펀딩 기간</span>
-              <span>{project.startDate + `\u00A0 ~ \u00A0`}</span>
-              <span>{project.endDate}</span>
+              <span>{project?.startDate + `\u00A0 ~ \u00A0`}</span>
+              <span>{project?.endDate}</span>
               <span>{time_difference + '일 남음'}</span>
             </div>
             <div>
               <span>결제</span>
               {/* FIXME: 목표 금액 달성시 바꿔야함. */}
-              <span>목표 금액 달성시 {project.endDate + '1'}에 결제 진행</span>
+              <span>목표 금액 달성시 {project?.endDate}에 결제 진행</span>
             </div>
           </FundingInfo>
-          <button className="funding-btn">프로젝트 후원하기</button>
+          <button className="funding-btn" onClick={onScrollReward}>
+            프로젝트 후원하기
+          </button>
         </div>
       </ProjectInfoContainer>
     </IntroductionContainer>

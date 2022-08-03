@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useRef, forwardRef, useState } from 'react';
 import styled from 'styled-components';
 import DOMPurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
+import { projectsApi } from '../../shared/api';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const ProjectContents = ({ project }) => {
+const ProjectContents = forwardRef(({ project }, ref) => {
+  const [showBtn, setShowBtn] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  // DomPurify
   const sanitizer = DOMPurify.sanitize;
+
+  const onBtnShow = (rewardId) => {
+    setShowBtn(true);
+    setSelected(rewardId);
+  };
+
+  const addFundingPrice = async (reward) => {
+    return await projectsApi.rewardPost(reward);
+  };
+
+  // 쿼리 무효화 -> 서버 데이터 리패칭 하기 위해 생성
+  const queryClient = useQueryClient();
+
+  const { mutate: onFunding } = useMutation(addFundingPrice, {
+    onSuccess: () => {
+      // 추가 후 캐싱된 데이터를 건드리기 위한 후처리 작업
+      // 수면 데이터 목록을 다시 불러오면 ok!
+
+      // queryClient.invalidateQueries 메서드를 쓰면
+      // 인수로 전달하는 key값에 대해 쿼리를 무효화해줌 => 리패칭
+      // 인수를 전달하지 않으면 모든 쿼리가 무효화됨
+      queryClient.invalidateQueries('project');
+    }
+  });
 
   return (
     <Container>
@@ -41,24 +71,41 @@ const ProjectContents = ({ project }) => {
           <StickerWrapper>
             <Rewards>
               <div>선물 선택</div>
-              {/* FIXME: Reward 배열 받아서 map으로 돌려야함 */}
               {project.rewards?.map((it) => {
                 return (
-                  <RewardCard key={it.rewardId}>
+                  <RewardCard
+                    ref={ref}
+                    key={it.rewardId}
+                    onClick={() => {
+                      onBtnShow(it.rewardId);
+                    }}
+                  >
                     <div>{it.fundingPrice} +</div>
                     <div>{it.rewardItem}</div>
+                    {showBtn && selected === it.rewardId && (
+                      <button
+                        className="funding-btn"
+                        onClick={() => {
+                          const data = {
+                            rewardId: it.rewardId
+                          };
+                          onFunding(data);
+                        }}
+                      >
+                        {it.fundingPrice}원 후원하기
+                      </button>
+                    )}
                   </RewardCard>
                 );
               })}
             </Rewards>
           </StickerWrapper>
-
           <StickerGhost></StickerGhost>
         </SubColumnInner>
       </SubColumn>
     </Container>
   );
-};
+});
 
 export default ProjectContents;
 
@@ -115,13 +162,6 @@ const SubColumnInner = styled.div`
     min-height: 500px;
   }
 `;
-
-// const EventBannerWrap = styled.div`
-//   @media (min-width: 1080px) {
-//     margin-bottom: 24px;
-//     display: block;
-//   }
-// `;
 
 const CreatorCard = styled.div`
   width: 100%;
@@ -193,6 +233,7 @@ const RewardCard = styled.div`
   padding: 20px;
   width: 100%;
   background-color: rgb(255, 255, 255);
+
   transition: height 0.2s ease 0s, box-shadow 0.2s ease 0s,
     border 0.2s ease-in-out 0s;
   -webkit-tap-highlight-color: transparent;
@@ -200,6 +241,9 @@ const RewardCard = styled.div`
 
   :hover {
     border: solid 1px gray;
+  }
+  :active {
+    background-color: #ececec;
   }
 
   div:first-child {
@@ -213,6 +257,29 @@ const RewardCard = styled.div`
   div:last-child {
     font-size: 0.9rem;
     color: #3d3d3d;
+  }
+  button.funding-btn {
+    margin-top: 0.5rem;
+    border-radius: 0.285714rem;
+    text-transform: none;
+    text-shadow: none;
+    font-weight: bold;
+    line-height: 1em;
+    font-style: normal;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgb(250, 100, 98);
+    color: rgb(255, 255, 255);
+    padding: 1em 2em;
+    font-size: 1.1em;
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    &:hover {
+      transition: 300ms ease-in;
+      background-color: rgb(255, 58, 58);
+    }
   }
 `;
 

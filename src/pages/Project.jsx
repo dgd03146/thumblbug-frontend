@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { layoutActions } from '../redux/layout-slice';
@@ -6,26 +6,13 @@ import { useLocation, useParams } from 'react-router-dom';
 import { projectsApi } from '../shared/api';
 import Introduction from '../components/Project/Introduction';
 import ProjectContents from '../components/Project/ProjectContents';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { projectsActions } from '../redux/projects-slice';
 
 const Project = () => {
   const dispatch = useDispatch();
-
   const { projectId } = useParams();
-
   const project = useSelector((state) => state.projects.project);
-
-  // const projects = useSelector((state) => state.projects.projects);
-  // const [targetPosts, setTargetPosts] = useState();
-
-  // useEffect(() => {
-  //   const targetPosts = projects.find((it) => it.projectId == projectId);
-  //   console.log(targetPosts, '타겟포스트들');
-  //   setTargetPosts(targetPosts);
-  // }, []);
-
-  // console.log(targetPosts, 'targetPosts');
 
   const getProject = async () => {
     try {
@@ -38,23 +25,22 @@ const Project = () => {
 
   const { data } = useQuery(['project'], getProject, {});
 
-  // const { state } = useLocation();
-  // const { project, time_difference } = state;
-
   useEffect(() => {
     dispatch(layoutActions.notHeaderFix()); // Header no fix
   }, []);
 
   useEffect(() => {
-    dispatch(projectsActions.setPost(data));
+    if (data) {
+      dispatch(projectsActions.setPost(data));
+    }
   }, []);
 
-  // time_difference={time_difference}
+  const rewardRef = useRef(null);
 
   return (
     <ProjectContainer>
-      <Introduction project={project} />
-      <ProjectContents project={project} />
+      <Introduction project={project} rewardRef={rewardRef} />
+      <ProjectContents project={project} ref={rewardRef} />
     </ProjectContainer>
   );
 };

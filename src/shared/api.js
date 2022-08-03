@@ -21,5 +21,7 @@ export const projectsApi = {
   projectsAll: (category) => api.get(`/api/projects?category=${category}`), // FIXME: /api/projects?category=${category}&sort=${sort}
 
   // 상세 페이지에 프로젝트 가져오기
-  projectDetail: (projectId) => api.get(`/api/projects/${projectId}`) // FIXME: /api/projects/{projectId}
+  projectDetail: (projectId) => api.get(`/api/projects/${projectId}`), // FIXME: /api/projects/{projectId}
+
+  rewardPost: (reward) => api.post('/api/funds', reward)
 };

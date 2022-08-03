@@ -10,30 +10,6 @@ import { projectsActions } from '../redux/projects-slice';
 const Home = () => {
   const dispatch = useDispatch();
 
-  // const category = useSelector((state) => state.projects.category.value);
-
-  // console.log(category, 'get 함수 밖');
-
-  // 카데고리별 프로젝트 불러오기
-
-  // query refetch 시킴
-
-  // 모든 프로젝트 불러오기
-  // const getProjectsAll = async () => {
-  //   try {
-  //     const res = await projectsApi.projectsAll(category);
-  //     return res.data;
-  //   } catch (error) {
-  //     console.log(error.res);
-  //   }
-  // };
-
-  // useQuery(['projects_all'], getProjectsAll, {
-  //   onSuccess: (data) => {
-  //     setData(data);
-  //   }
-  // });
-
   // api 전달하기 위해
 
   // FIXME: const sort = useSelector((state) => state.projects.sort.value);
