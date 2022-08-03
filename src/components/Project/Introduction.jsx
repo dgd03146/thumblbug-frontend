@@ -1,11 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const Introduction = ({ project, time_difference }) => {
+const Introduction = ({ project }) => {
+  const difference = useCallback((date1, date2) => {
+    const date1utc = Date.UTC(
+      date1.getFullYear(),
+      date1.getMonth(),
+      date1.getDate()
+    );
+    const date2utc = Date.UTC(
+      date2.getFullYear(),
+      date2.getMonth(),
+      date2.getDate()
+    );
+    const day = 1000 * 60 * 60 * 24;
+    return (date2utc - date1utc) / day;
+  }, []);
+
+  let time = new Date().toISOString();
+  const date1 = new Date(time.slice(0, 10)), // 현재 날짜
+    date2 = new Date(project.endDate), // 종료날짜 FIXME: it.endDate
+    time_difference = difference(date1, date2);
+
   const settings = {
     dots: true,
     arrows: true,
@@ -25,7 +45,7 @@ const Introduction = ({ project, time_difference }) => {
       <ProjectInfoContainer>
         <ImageWrapper>
           <StyledSlider {...settings}>
-            {project.thumbnails.map((it, index) => (
+            {project.thumbnails?.map((it, index) => (
               <img src={it} key={index} alt="thumbnails" />
             ))}
           </StyledSlider>
@@ -35,7 +55,7 @@ const Introduction = ({ project, time_difference }) => {
             <Price>
               <div className="sec funding-count">모인금액</div>
               <span className="common funding-goal">
-                {project.goal}
+                {project.totalFundingPrice}
                 <span>원</span>
               </span>
               <span>{`2743%`}</span>
@@ -49,7 +69,7 @@ const Introduction = ({ project, time_difference }) => {
             <Funding>
               <div className="sec">후원자</div>
               <div className="common">
-                {`fundingCount`} <span>명</span>
+                {project.fundingCount} <span>명</span>
               </div>
             </Funding>
           </div>
@@ -60,12 +80,13 @@ const Introduction = ({ project, time_difference }) => {
             </div>
             <div className="funding-date">
               <span>펀딩 기간</span>
-              <span>{project.startDate}</span>
+              <span>{project.startDate + `\u00A0 ~ \u00A0`}</span>
               <span>{project.endDate}</span>
-              <span>{`남은 날짜`}</span>
+              <span>{time_difference + '일 남음'}</span>
             </div>
             <div>
               <span>결제</span>
+              {/* FIXME: 목표 금액 달성시 바꿔야함. */}
               <span>목표 금액 달성시 {project.endDate + '1'}에 결제 진행</span>
             </div>
           </FundingInfo>
@@ -129,11 +150,12 @@ const ProjectInfoContainer = styled.div`
   }
 
   div.right-container {
-    width: 100%;
+    width: 40%;
     div {
       width: 100%;
     }
     @media screen and (max-width: 1440px) {
+      width: 100%;
       padding-top: 3rem;
       div {
         margin-bottom: 0.5rem;

@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import DOMPurify from 'dompurify';
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.core.css';
-import ReactQuill from 'react-quill';
 
-const ProjectContents = () => {
+const ProjectContents = ({ project }) => {
   const sanitizer = DOMPurify.sanitize;
 
   return (
@@ -16,18 +15,10 @@ const ProjectContents = () => {
           className="view ql-editor"
           style={{ padding: 0 }}
           dangerouslySetInnerHTML={{
-            __html: sanitizer(
-              `<p>오 혹시 이것도 되나요</p><iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/kORKuULdiKM?showinfo=0"></iframe><p><br></p>`,
-              {
-                ALLOWED_TAGS: ['iframe'],
-                ADD_ATTR: [
-                  'allow',
-                  'allowfullscreen',
-                  'frameborder',
-                  'scrolling'
-                ]
-              }
-            )
+            __html: sanitizer(`${project.plan}`, {
+              ALLOWED_TAGS: ['iframe'],
+              ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+            })
           }}
         ></div>
       </MainColumn>
@@ -40,50 +31,25 @@ const ProjectContents = () => {
                 <div className="creator-profileImage">
                   <img src="/images/test.jpg" alt="" />
                 </div>
-                <div className="creator-name">{`창작자 이름`}</div>
+                <div className="creator-name">{project.creatorName}</div>
               </div>
               <div className="creator-biography">
-                {`나으이ㅣ르이나머리ㅏㅁㄴ어ㅏㅣ럼ㄴ이ㅏ러ㅏㅁㄴ아ㅣ럼니아러ㅣㅏㅁㄴ어리ㅓㅁㄴ이러ㅣㅁㄴ얼민어림ㅇ너림ㄴ얼민얾닝러ㅣㄴㅁ어림ㄴㅇㄹ`}
+                {project.creatorBiography}
               </div>
-              <div></div>
             </div>
           </CreatorCard>
           <StickerWrapper>
             <Rewards>
               <div>선물 선택</div>
               {/* FIXME: Reward 배열 받아서 map으로 돌려야함 */}
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
-              <RewardCard>
-                <div>{`1000원`} +</div>
-                <div>{`선물 없이 후원하기`}</div>
-              </RewardCard>
+              {project.rewards?.map((it) => {
+                return (
+                  <RewardCard key={it.rewardId}>
+                    <div>{it.fundingPrice} +</div>
+                    <div>{it.rewardItem}</div>
+                  </RewardCard>
+                );
+              })}
             </Rewards>
           </StickerWrapper>
 
@@ -108,6 +74,9 @@ const Container = styled.div`
 `;
 
 const MainColumn = styled.div`
+  border: 1px solid #ececec;
+  padding: 2rem;
+
   order: 1;
   width: 100%;
   padding-bottom: 3rem;

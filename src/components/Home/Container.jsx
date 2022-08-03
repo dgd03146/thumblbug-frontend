@@ -1,17 +1,43 @@
 import styled from 'styled-components';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { category } from '../../data';
 import ListContainer from './ListContainer';
+import { useSelector, useDispatch } from 'react-redux';
+import { useQueryClient } from '@tanstack/react-query';
+import { projectsActions } from '../../redux/projects-slice';
 
-const Container = () => {
-  const getCategory = () => {};
+const Container = ({ onGetCategory }) => {
+  const projects = useSelector((state) => state.projects.projects);
+
+  const dispatch = useDispatch();
+
+  const categoryName = useSelector(
+    (state) => state.projects.category.categoryName
+  );
+
+  const handleGetCategory = (categoryname, value) => {
+    // category 설정
+
+    onGetCategory(categoryname, value);
+
+    // dispatch(
+    //   projectsActions.setCategory({
+    //     categoryName: categoryname,
+    //     value: value
+    //   })
+    // );
+  };
 
   return (
     <>
       <CategoryWrapper>
         {category.map((it) => (
-          <Category key={it.categoryName} onClick={getCategory}>
+          <Category
+            key={it.categoryName}
+            onClick={() => {
+              handleGetCategory(it.categoryName, it.value);
+            }}
+          >
             <CategoryIcon>
               <img src={it.url} alt="All" />
             </CategoryIcon>
@@ -19,9 +45,11 @@ const Container = () => {
           </Category>
         ))}
       </CategoryWrapper>
-      <CategoryNavigation>{`전체`}</CategoryNavigation>
+      {/* FIXME: 카테고리 네임 */}
+      <CategoryNavigation>{categoryName}</CategoryNavigation>
       <ProjectsCounter>
-        <ProjectsCount>{`38,662`}</ProjectsCount>개의 프로젝트가 있습니다.
+        <ProjectsCount>{projects.length}</ProjectsCount>개의 프로젝트가
+        있습니다.
       </ProjectsCounter>
       <ListContainer />
     </>
@@ -47,9 +75,9 @@ const Category = styled.div`
   padding: 20px 2rem;
   /* margin: 0 10px; */
   background-color: ${(props) => props.color};
-  :active {
+  /* :active {
     background-color: rgba(240, 240, 240, 0.5);
-  }
+  } */
   :hover {
     background-color: rgba(240, 240, 240, 0.5);
   }

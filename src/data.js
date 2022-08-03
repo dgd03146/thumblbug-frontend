@@ -1,25 +1,31 @@
 export const category = [
   {
+    value: 'all',
     categoryName: '전체',
     url: '/images/all.svg'
   },
   {
+    value: 'game',
     categoryName: '게임',
     url: '/images/game.svg'
   },
   {
+    value: 'beauty',
     categoryName: '뷰티',
     url: '/images/beauty.svg'
   },
   {
+    value: 'pet',
     categoryName: '반려동물',
     url: '/images/pet.svg'
   },
   {
+    value: 'culture',
     categoryName: '문화',
     url: '/images/culture.svg'
   },
   {
+    value: 'fashion',
     categoryName: '패션',
     url: '/images/fashion.svg'
   }

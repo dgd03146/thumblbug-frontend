@@ -1,18 +1,21 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
-import { projects } from '../../data';
+
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ListContainer = () => {
   const navigate = useNavigate();
 
-  const goToDetail = (it, time_difference) => {
-    navigate('/project/' + it.projectId, {
-      state: { project: it, time_difference }
-    });
+  const projects = useSelector((state) => state.projects.projects);
+
+  // console.log(projects, 'List안에 있는 projects');
+
+  const goToDetail = (it) => {
+    navigate('/project/' + it.projectId);
   };
 
-  // 남은 날짜 계산
+  // 남은 날짜 계산 함수
   const difference = useCallback((date1, date2) => {
     const date1utc = Date.UTC(
       date1.getFullYear(),

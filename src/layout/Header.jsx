@@ -1,17 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const isHeaderFixed = useSelector((state) => state.layout.headerFixed); // 홈에서만 헤더 고정
 
+  // FIXME: 태그들을 다 스타일컴포넌트 태그로 만듬
   return (
     <HeaderLayOut isHeaderFixed={isHeaderFixed}>
       <HeaderWrapper>
         <HeaderUpperLayOut>
-          <LogoWrapper>
-            <img src={'/images/tumblbug.svg'} alt="logo" />
-          </LogoWrapper>
+          <Link to="/">
+            <LogoWrapper>
+              <img src={'/images/tumblbug.svg'} alt="logo" />
+            </LogoWrapper>
+          </Link>
           <StatusWrapper>
             <ProjectEditorButton>프로젝트 올리기</ProjectEditorButton>
             <ButtonWrapper>
@@ -106,7 +110,7 @@ const LogoWrapper = styled.div`
   transition: scale 0.3s ease-in-out 0s;
 
   img {
-    width: 200px;
+    width: 120px;
     /* height: 200px; */
   }
 
