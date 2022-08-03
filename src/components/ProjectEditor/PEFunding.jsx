@@ -66,8 +66,7 @@ const PEFunding = (props) => {
             <Asterisk />
           </PEInfoTitle>
           <PEInfoDesc>
-            후원자들이 프로젝트의 내용을 쉽게 파악하고 좋은 인상을 받을 수
-            있도록 이미지 가이드라인을 따라 주세요.
+          프로젝트를 완수하기 위해 필요한 금액을 설정해주세요.
           </PEInfoDesc>
           <PENotice
             title={"목표 금액 설정 시 꼭 알아두세요!"}

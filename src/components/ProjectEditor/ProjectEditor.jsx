@@ -18,17 +18,17 @@ const ProjectEditor = (props) => {
         TumblbugApis.newPost(postData)
     }
     const {mutate} = useMutation(newPost)
-    // const 
+    const images = postData.thumbnails.map(x => x?.filename)
 
-    // useEffect(() => {
-    //     console.log(postData);
-    // }, [postData])
+    // const 
+    useEffect(() => {
+        console.log(postData.thumbnails.map(x => x?.filename));
+    }, [postData])
     useEffect(() => {
         return () => {
-            const images = postData.thumbnails.map(x => x.filename)
             console.log(images);
-            TumblbugApis.deleteImages(images).then(res => {
-                alert("오오케이")
+            TumblbugApis.deleteImages({images}).then(res => {
+                console.log("이미지 삭제 완료")
             })
         }
     }, [])

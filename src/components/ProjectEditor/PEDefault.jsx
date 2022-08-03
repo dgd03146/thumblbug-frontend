@@ -63,9 +63,9 @@ const PEDefault = (props) => {
     formData.append("file", e.target.files[0])
     TumblbugApis.postThumbnailUpload(formData).then(res => {
         if(postData.thumbnails){
-        dispatch(setThumbnails([...postData.thumbnails, res.data[0]]))}
+        dispatch(setThumbnails([...postData.thumbnails, res.data]))}
         else{
-            dispatch(setThumbnails([res.data[0]]))
+            dispatch(setThumbnails([res.data]))
         }
     })
     console.log(formData);}

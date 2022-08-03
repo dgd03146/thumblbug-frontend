@@ -23,10 +23,14 @@ const SignIn = (props) => {
     TumblbugApis.loginUser({email: emailRef.current.value, password: passwordRef.current.value})
     .then(res => {
       console.log("----login----");
-      if(res.data.token){
-        console.log(jwtDecode(res.data.token));
+      console.log(res);
+      if(res.headers.authorization){
+        // console.log(jwtDecode(res.data.token));
+        console.log(jwtDecode(res.headers.authorization));
         alert("로그인 성공")
-        localStorage.setItem("token", res.data.token)
+        // localStorage.setItem("token", res.data.token)
+        // 
+        localStorage.setItem("token", res.headers.authorization)
         navigate("/")
       }
     })
