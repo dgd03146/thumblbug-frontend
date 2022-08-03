@@ -12,7 +12,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import TumblbugApis from "../../shared/api";
 import { useDispatch } from "react-redux";
-import { setPlan } from "../../redux/newPostSlice";
+import { setPlan, setTmpImage } from "../../redux/newPostSlice";
 
 const PEStory = (props) => {
   const QuillRef = useRef();
@@ -42,20 +42,24 @@ const PEStory = (props) => {
         `https://mir-s3-cdn-cf.behance.net/project_modules/disp/f1055231234507.564a1d234bfb6.gif`
       );
 
-      try {
         let url = "";
-        const res = await TumblbugApis.postStoryImageUpload(formData);
-        url = res.data.url;
-        // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
-        getEditor().deleteText(range.index, 1);
-        // 받아온 url을 이미지 태그에 삽입
-        getEditor().insertEmbed(range.index, "image", url);
+        let filename = ""
+        TumblbugApis.postStoryImageUpload(formData).then(res =>{
+            url = res.data.url;
+            filename = res.data.filename
+          // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
+          getEditor().deleteText(range.index, 1);
+          // 받아온 url을 이미지 태그에 삽입
+          getEditor().insertEmbed(range.index, "image", res.data.url);
 
-        // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
-        getEditor().setSelection(range.index + 1);
-      } catch (e) {
+          // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
+          getEditor().setSelection(range.index + 1);
+      })
+        .catch(e => {
         getEditor().deleteText(range.index, 1);
-      }
+      })
+      // if(filename)dispatch(setTmpImage(filename))
+
     };
   };
 
@@ -152,8 +156,8 @@ const PEStory = (props) => {
                   dispatch(setPlan(parsedata));
                 }
               }}
-            //   onKeyUp={handleOnKeyUp}
-            //   onFocus={handleOnFocus}
+              // onKeyUp={handleOnKeyUp}
+              // onFocus={handleOnFocus}
             //   onBlur={handleOnBlur}
               modules={modules}
               theme="snow"

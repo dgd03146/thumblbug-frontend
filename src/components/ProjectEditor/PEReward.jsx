@@ -29,7 +29,7 @@ const PEReward = (props) => {
         setRewardItem(e.target.value)
     }
     const handleFundingPrice = (e) => {
-        setFundingPrice(e.target.value)
+        setFundingPrice(e.target.value.replace(/[^0-9\\.]+/g, ""))
     }
 
     console.log(postData?.rewards);
@@ -73,7 +73,7 @@ const PEReward = (props) => {
               </PEFormItemTitle>
               <PEFormInput maxLength={50} inputRef={rewardItemRef} changeHandler={handleRewardItem}/>
               <PEFormItemTitle>최소 후원 금액</PEFormItemTitle>
-              <PEFormInput inputmode={"numeric"} inputRef={fundingPriceRef} changeHandler={handleFundingPrice}/>
+              <PEFormInput value={fundingPrice} inputmode={"numeric"} inputRef={fundingPriceRef} changeHandler={handleFundingPrice}/>
               <ButtonWrapper>
                 <button onClick={() => {
                     rewardItemRef.current.value = ""
@@ -82,7 +82,7 @@ const PEReward = (props) => {
                 <button onClick={() => {
                     dispatch(setRewards([...postData.rewards, {
                         rewardItem: rewardItemRef.current.value,
-                        fundingPrice: fundingPriceRef.current.value
+                        fundingPrice: Number(fundingPriceRef.current.value)
                     }]))
                 }}>저장</button>
               </ButtonWrapper>

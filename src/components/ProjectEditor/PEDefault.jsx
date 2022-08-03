@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCategory,
     setSummary,
     setTitle,
-    setThumbnails, } from "../../redux/newPostSlice";
+    setThumbnails,
+    setTmpImage, } from "../../redux/newPostSlice";
 import {
   Asterisk,
   ImgToolTip,
@@ -63,7 +64,9 @@ const PEDefault = (props) => {
     formData.append("file", e.target.files[0])
     TumblbugApis.postThumbnailUpload(formData).then(res => {
         if(postData.thumbnails){
-        dispatch(setThumbnails([...postData.thumbnails, res.data]))}
+        dispatch(setThumbnails([...postData.thumbnails, res.data]))
+        dispatch(setTmpImage(res.data.filename))
+        }
         else{
             dispatch(setThumbnails([res.data]))
         }

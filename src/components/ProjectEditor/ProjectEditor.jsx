@@ -13,21 +13,22 @@ import { useMutation } from "@tanstack/react-query";
 
 const ProjectEditor = (props) => {
     const params = useParams()
-    const postData = useSelector(state => state.post)
+    const postData = useSelector(state => state.post.post)
     const newPost = () => {
         TumblbugApis.newPost(postData)
     }
     const {mutate} = useMutation(newPost)
-    const images = postData.thumbnails.map(x => x?.filename)
+    // const images = postData.thumbnails.map(x => x?.filename)
+    const tmpImages = useSelector(state => state.post.tmpImages)
 
     // const 
     useEffect(() => {
-        console.log(postData.thumbnails.map(x => x?.filename));
+        console.log(tmpImages);
     }, [postData])
     useEffect(() => {
         return () => {
-            console.log(images);
-            TumblbugApis.deleteImages({images}).then(res => {
+            console.log(tmpImages);
+            TumblbugApis.deleteImages({tmpImages}).then(res => {
                 console.log("이미지 삭제 완료")
             })
         }
