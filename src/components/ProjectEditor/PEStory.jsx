@@ -1,36 +1,36 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import styled from 'styled-components';
 import {
   Asterisk,
   PEForm,
   PEInfo,
   PEInfoTitle,
   PEItemWrapper,
-  PENotice,
-} from "./PEStyles";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import TumblbugApis from "../../shared/api";
-import { useDispatch } from "react-redux";
-import { setPlan, setTmpImage } from "../../redux/newPostSlice";
+  PENotice
+} from './PEStyles';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import TumblbugApis from '../../shared/api';
+import { useDispatch } from 'react-redux';
+import { setPlan, setTmpImage } from '../../redux/newPostSlice';
 
 const PEStory = (props) => {
   const QuillRef = useRef();
   const dispatch = useDispatch();
   // const [contents, setContents] = useState("");
   const { postData } = props;
-  let onKeyEvent = false
+  let onKeyEvent = false;
 
   const handleImage = () => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
     input.click();
     input.onchange = async () => {
       const file = input.files[0];
       console.log(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       // 현재 커서 위치 저장
       const { getEditor } = QuillRef.current;
       const range = getEditor().getSelection(true);
@@ -38,80 +38,76 @@ const PEStory = (props) => {
       // 서버에 올려질때까지 표시할 로딩 placeholder 삽입
       getEditor().insertEmbed(
         range.index,
-        "image",
+        'image',
         `https://mir-s3-cdn-cf.behance.net/project_modules/disp/f1055231234507.564a1d234bfb6.gif`
       );
 
-        let url = "";
-        let filename = ""
-        TumblbugApis.postStoryImageUpload(formData).then(res =>{
-            url = res.data.url;
-            filename = res.data.filename
-          // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
-          getEditor().deleteText(range.index, 1);
-          // 받아온 url을 이미지 태그에 삽입
-          getEditor().insertEmbed(range.index, "image", res.data.url);
-
-          // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
-          getEditor().setSelection(range.index + 1);
-      })
-        .catch(e => {
+      try {
+        let url = '';
+        const res = await TumblbugApis.postStoryImageUpload(formData);
+        url = res.data.url;
+        // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
         getEditor().deleteText(range.index, 1);
-      })
+        // 받아온 url을 이미지 태그에 삽입
+        getEditor().insertEmbed(range.index, 'image', url);
+        // 사용자 편의를 위해 커서 이미지 오른쪽으로 이동
+        getEditor().setSelection(range.index + 1);
+      } catch (e) {
+        getEditor().deleteText(range.index, 1);
+      }
       // if(filename)dispatch(setTmpImage(filename))
-
     };
   };
 
   const handleOnKeyUp = (e) => {
     // console.log(QuillRef.current.getEditor().blur());
     if (e.keyCode === 13) {
-        onKeyEvent = true;
-        QuillRef.current.getEditor()?.blur();
-        QuillRef.currnet.getEditor()?.focus();
-        if (document.documentElement.className.indexOf("edit-focus") === -1) {
-          document.documentElement.classList.toggle("edit-focus");
-        }
-        onKeyEvent = false;
+      onKeyEvent = true;
+      QuillRef.current.getEditor()?.blur();
+      QuillRef.currnet.getEditor()?.focus();
+      if (document.documentElement.className.indexOf('edit-focus') === -1) {
+        document.documentElement.classList.toggle('edit-focus');
       }
-  }
+      onKeyEvent = false;
+    }
+  };
 
   const handleOnFocus = (e) => {
     if (
-        !onKeyEvent &&
-        document.documentElement.className.indexOf("edit-focus") === -1
-      ) {
-        document.documentElement.classList.toggle("edit-focus");
-        window.scrollTo(0, 0);
-      }
-  }
+      !onKeyEvent &&
+      document.documentElement.className.indexOf('edit-focus') === -1
+    ) {
+      document.documentElement.classList.toggle('edit-focus');
+      window.scrollTo(0, 0);
+    }
+  };
 
   const handleOnBlur = (e) => {
     if (
-        !onKeyEvent &&
-        document.documentElement.className.indexOf("edit-focus") !== -1
-      ) {
-        document.documentElement.classList.toggle("edit-focus");
-      }
-  }
+      !onKeyEvent &&
+      document.documentElement.className.indexOf('edit-focus') !== -1
+    ) {
+      document.documentElement.classList.toggle('edit-focus');
+    }
+  };
 
   const modules = {
     toolbar: {
       container: [
-        ["bold", "italic", "underline", "strike"],
-        [{ size: ["small", false, "large", "huge"] }, { color: [] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ size: ['small', false, 'large', 'huge'] }, { color: [] }],
         [
-          { list: "ordered" },
-          { list: "bullet" },
-          { indent: "-1" },
-          { indent: "+1" },
-          { align: [] },
+          { list: 'ordered' },
+          { list: 'bullet' },
+          { indent: '-1' },
+          { indent: '+1' },
+          { align: [] }
         ],
-        ["image", "video"],
+        ['image', 'video']
       ],
       handlers: {
-        image: handleImage,
-      },
+        image: handleImage
+      }
     },
     clipboard: { matchVisual: false }
   };
@@ -124,20 +120,20 @@ const PEStory = (props) => {
             <Asterisk />
           </PEInfoTitle>
           <PENotice
-            title={"텍스트 에디터 사용법"}
+            title={'텍스트 에디터 사용법'}
             desc={[
               `일단 붙여보고 멀쓸지 고민`,
               `종료 전 후원 취소를 대비해 10% 이상 초과 달성을 목표로 해주세요.`,
-              `제작비, 선물 배송비, 인건비, 예비 비용 등을 함께 고려해주세요.`,
+              `제작비, 선물 배송비, 인건비, 예비 비용 등을 함께 고려해주세요.`
             ]}
           />
         </PEInfo>
         <PEForm>
           <div>
-            <div style={{ width: "fit-content" }}>
+            <div style={{ width: 'fit-content' }}>
               <GuideButton href="https://creator.tumblbug.com/9b760197-bec0-4ffb-84b0-c943c0b50ae6">
                 <div>
-                  <img src={process.env.PUBLIC_URL + "/storyguide.svg"} />
+                  <img src={process.env.PUBLIC_URL + '/storyguide.svg'} />
                 </div>
                 <p>작성 가이드</p>
               </GuideButton>
@@ -148,17 +144,17 @@ const PEStory = (props) => {
               onChange={(e) => {
                 console.log(e);
                 const data = e;
-                if (data.indexOf("<p><br></p>") > -1) {
+                if (data.indexOf('<p><br></p>') > -1) {
                   const parsedata = data.replace(
                     /<p><br><\/p>/gi,
-                    "<p>&nbsp;</p>"
+                    '<p>&nbsp;</p>'
                   );
                   dispatch(setPlan(parsedata));
                 }
               }}
               // onKeyUp={handleOnKeyUp}
               // onFocus={handleOnFocus}
-            //   onBlur={handleOnBlur}
+              //   onBlur={handleOnBlur}
               modules={modules}
               theme="snow"
               placeholder="내용을 입력해주세요."

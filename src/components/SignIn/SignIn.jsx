@@ -1,50 +1,53 @@
-import React, { useEffect, useRef } from "react";
-import styled from "styled-components";
-// import "./SignIn.css"
+import React, { useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import './SignIn.css';
 import {
   FormInputLabel,
   FormInputWrapper,
   SmallTextWrapper,
   H3Typo,
   BigRedButton
-} from "../../shared/Styles";
-import { Link } from "react-router-dom";
-import TumblbugApis from "../../shared/api";
-import jwtDecode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+} from '../../shared/Styles';
+import { Link } from 'react-router-dom';
+import TumblbugApis from '../../shared/api';
+import jwtDecode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = (props) => {
-  const navigate = useNavigate()
-  const emailRef = useRef()
-  const passwordRef = useRef()
+  const navigate = useNavigate();
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   const handleLogin = () => {
-    console.log("login clicked!");
-    TumblbugApis.loginUser({email: emailRef.current.value, password: passwordRef.current.value})
-    .then(res => {
-      console.log("----login----");
-      console.log(res);
-      if(res.headers.authorization){
-        // console.log(jwtDecode(res.data.token));
-        console.log(jwtDecode(res.headers.authorization));
-        alert("로그인 성공")
-        // localStorage.setItem("token", res.data.token)
-        // 
-        localStorage.setItem("token", res.headers.authorization)
-        navigate("/")
-      }
+    console.log('login clicked!');
+    TumblbugApis.loginUser({
+      email: emailRef.current.value,
+      password: passwordRef.current.value
     })
-    .catch(err => {
-      alert(err.data.message)
-    })
-  }
+      .then((res) => {
+        console.log('----login----');
+        console.log(res);
+        if (res.headers.authorization) {
+          // console.log(jwtDecode(res.data.token));
+          console.log(jwtDecode(res.headers.authorization));
+          alert('로그인 성공');
+          // localStorage.setItem("token", res.data.token)
+          //
+          localStorage.setItem('token', res.headers.authorization);
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        alert(err.data.message);
+      });
+  };
 
   useEffect(() => {
-    if(localStorage.getItem("token")){
-      alert("로그인 상태입니다.")
-      navigate("/")
+    if (localStorage.getItem('token')) {
+      alert('로그인 상태입니다.');
+      navigate('/');
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -55,20 +58,28 @@ const SignIn = (props) => {
             <FormInputLabel>이메일 주소</FormInputLabel>
             <FormInputWrapper>
               <span className="style-signin">
-                <input ref={emailRef} type="text" placeholder="이메일 주소를 입력해주세요" />
+                <input
+                  ref={emailRef}
+                  type="text"
+                  placeholder="이메일 주소를 입력해주세요"
+                />
               </span>
             </FormInputWrapper>
             <FormInputLabel>비밀번호</FormInputLabel>
             <FormInputWrapper>
               <span>
-                <input ref={passwordRef} type="password" placeholder="비밀번호를 입력해주세요" />
+                <input
+                  ref={passwordRef}
+                  type="password"
+                  placeholder="비밀번호를 입력해주세요"
+                />
               </span>
             </FormInputWrapper>
             <BigRedButton onClick={handleLogin}>
               <span>로그인</span>
             </BigRedButton>
             <SmallTextWrapper>
-            아직 텀블벅 계정이 없으신가요?
+              아직 텀블벅 계정이 없으신가요?
               <span>
                 <Link to="../signUp">회원가입</Link>
               </span>
@@ -134,8 +145,6 @@ const CenterContainer = styled.div`
   height: 100%;
   padding: 80px 16px 20px;
   margin: 0px auto;
-
-  
 `;
 
 export default SignIn;

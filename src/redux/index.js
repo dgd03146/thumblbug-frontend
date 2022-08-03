@@ -7,7 +7,7 @@ import projectReducer from './projects-slice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    post: newPostReducer
+    post: newPostReducer,
     layout: layoutReducer,
     projects: projectReducer
   }

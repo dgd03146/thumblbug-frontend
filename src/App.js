@@ -1,11 +1,11 @@
 import './App.css';
-import {ThemeProvider}from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import Header from './layout/Header';
 import { Routes, Route } from 'react-router-dom';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/SignUp/SignUp';
 import { useLocation } from 'react-router-dom';
-import {theme} from "./shared/Styles"
+import { theme } from './shared/Styles';
 import ProjectEditor from './components/ProjectEditor/ProjectEditor';
 import axios from 'axios';
 import { useEffect } from 'react';
@@ -24,10 +24,10 @@ function App() {
           <Route path="/" element={<Container />}>
             <Route index element={<Home />} />
             <Route path="/project/:projectId" element={<Project />} />
-            <Route path="/signIn" element={<SignIn />}/>
-            <Route path="/signUp" element={<SignUp />}/>
-            <Route path="/project-editor/:tab" element={<ProjectEditor />}/>
           </Route>
+          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/project-editor/:tab" element={<ProjectEditor />} />
         </Routes>
       </ThemeProvider>
     </div>

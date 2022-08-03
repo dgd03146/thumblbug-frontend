@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import TumblbugApis from "../../shared/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setCategory,
-    setSummary,
-    setTitle,
-    setThumbnails,
-    setTmpImage, } from "../../redux/newPostSlice";
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import TumblbugApis from '../../shared/api';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setCategory,
+  setSummary,
+  setTitle,
+  setThumbnails,
+  setTmpImage
+} from '../../redux/newPostSlice';
 import {
   Asterisk,
   ImgToolTip,
@@ -19,14 +21,13 @@ import {
   PENotice,
   PEFormInput,
   PEFromWithImgToolTip,
-  TooltipWrap,
-} from "./PEStyles";
+  TooltipWrap
+} from './PEStyles';
 
 const PEDefault = (props) => {
-
   const [errors, setErrors] = useState({
     titleError: false,
-    summaryError: false,
+    summaryError: false
   });
   const [showTitleTooltip, setShowTitleTooltip] = useState(true);
   const [showSummaryTooltip, setShowSummaryTooltip] = useState(true);
@@ -37,9 +38,9 @@ const PEDefault = (props) => {
   const summaryRef = useRef();
   const thumbnailRef = useRef();
 
-  const dispatch = useDispatch()
-  const {postData} = props
-//   const postData = useSelector(state => state.post)
+  const dispatch = useDispatch();
+  const { postData } = props;
+  //   const postData = useSelector(state => state.post)
 
   const checkAll = () => {
     let newErrors = { ...errors };
@@ -52,27 +53,28 @@ const PEDefault = (props) => {
   };
   const handleOnChange = (e) => {
     checkAll();
-    dispatch(setCategory(categoryRef.current.value))
-    dispatch(setTitle(titleRef.current.value))
-    dispatch(setSummary(summaryRef.current.value))
+    dispatch(setCategory(categoryRef.current.value));
+    dispatch(setTitle(titleRef.current.value));
+    dispatch(setSummary(summaryRef.current.value));
     console.log(postData);
   };
   const handleImageChange = (e) => {
-    if(postData.thumbnails?.length >= 5) alert("대표 이미지는 최대 5개까지 업로드 가능합니다.")
-    else{
-    let formData = new FormData();
-    formData.append("file", e.target.files[0])
-    TumblbugApis.postThumbnailUpload(formData).then(res => {
-        if(postData.thumbnails){
-        dispatch(setThumbnails([...postData.thumbnails, res.data]))
-        dispatch(setTmpImage(res.data.filename))
+    if (postData.thumbnails?.length >= 5)
+      alert('대표 이미지는 최대 5개까지 업로드 가능합니다.');
+    else {
+      let formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      TumblbugApis.postThumbnailUpload(formData).then((res) => {
+        if (postData.thumbnails) {
+          dispatch(setThumbnails([...postData.thumbnails, res.data]));
+          dispatch(setTmpImage(res.data.filename));
+        } else {
+          dispatch(setThumbnails([res.data]));
         }
-        else{
-            dispatch(setThumbnails([res.data]))
-        }
-    })
-    console.log(formData);}
-  }
+      });
+      console.log(formData);
+    }
+  };
   useEffect(() => {
     checkAll();
     console.log(postData);
@@ -80,11 +82,11 @@ const PEDefault = (props) => {
   useEffect(() => {
     console.log(postData);
     console.log(postData.rewards);
-  }, [postData])
+  }, [postData]);
   useEffect(() => {
     console.log(thumbnailRef);
-  }, [thumbnailRef])
-  
+  }, [thumbnailRef]);
+
   return (
     <>
       <PEItemWrapper>
@@ -101,9 +103,13 @@ const PEDefault = (props) => {
         </PEInfo>
         <PEForm>
           <PEFormItemTitle>카테고리</PEFormItemTitle>
-          <div style={{ position: "relative" }}>
+          <div style={{ position: 'relative' }}>
             <SelectorWrapper>
-              <select defaultValue={postData.category} ref={categoryRef} onChange={handleOnChange}>
+              <select
+                defaultValue={postData.category}
+                ref={categoryRef}
+                onChange={handleOnChange}
+              >
                 <option value="game">게임</option>
                 <option value="fashion">패션</option>
                 <option value="culture">문화</option>
@@ -126,13 +132,13 @@ const PEDefault = (props) => {
         </PEInfo>
         <PEForm>
           <PEFormItemTitle
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
             onClick={() => setShowTitleTooltip(!showTitleTooltip)}
           >
             제목
             <TooltipWrap>
               <div>
-                <img src={process.env.PUBLIC_URL + "/tooltip.svg"} />
+                <img src={process.env.PUBLIC_URL + '/tooltip.svg'} />
               </div>
             </TooltipWrap>
           </PEFormItemTitle>
@@ -144,7 +150,7 @@ const PEDefault = (props) => {
                 어디에 쓰이나요?
               </div>
               <div className="image">
-                <img src={process.env.PUBLIC_URL + "/PE-tooltip-title.png"} />
+                <img src={process.env.PUBLIC_URL + '/PE-tooltip-title.png'} />
               </div>
             </ImgToolTip>
           </PEFromWithImgToolTip>
@@ -152,7 +158,7 @@ const PEDefault = (props) => {
             inputRef={titleRef}
             error={errors.titleError}
             maxLength={32}
-            placeholder={"제목을 입력해주세요"}
+            placeholder={'제목을 입력해주세요'}
             changeHandler={handleOnChange}
             value={postData.title}
           />
@@ -172,12 +178,12 @@ const PEDefault = (props) => {
         </PEInfo>
         <PEForm>
           <PEFormItemTitle
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
             onClick={() => setShowSummaryTooltip(!showSummaryTooltip)}
           >
             <TooltipWrap>
               <div>
-                <img src={process.env.PUBLIC_URL + "/tooltip.svg"} />
+                <img src={process.env.PUBLIC_URL + '/tooltip.svg'} />
               </div>
             </TooltipWrap>
           </PEFormItemTitle>
@@ -189,7 +195,7 @@ const PEDefault = (props) => {
                 어디에 표시되나요?
               </div>
               <div className="image">
-                <img src={process.env.PUBLIC_URL + "/PE-tooltip-summary.png"} />
+                <img src={process.env.PUBLIC_URL + '/PE-tooltip-summary.png'} />
               </div>
             </ImgToolTip>
           </PEFromWithImgToolTip>
@@ -197,9 +203,9 @@ const PEDefault = (props) => {
             inputRef={summaryRef}
             error={errors.summaryError}
             maxLength={50}
-            placeholder={"프로젝트 요약을 입력해주세요"}
+            placeholder={'프로젝트 요약을 입력해주세요'}
             changeHandler={handleOnChange}
-            helperText={"최소 10자 이상 입력해주세요"}
+            helperText={'최소 10자 이상 입력해주세요'}
             value={postData.summary}
             large
           />
@@ -217,21 +223,21 @@ const PEDefault = (props) => {
           </PEInfoDesc>
           <PENotice
             title={
-              "1개 이상의 이미지를 등록하면 이미지 슬라이더 형태로 제공됩니다."
+              '1개 이상의 이미지를 등록하면 이미지 슬라이더 형태로 제공됩니다.'
             }
             desc={
-              "푸시 메시지 등 이미지가 1개만 제공되는 상황에서 대표 이미지가 활용됩니다."
+              '푸시 메시지 등 이미지가 1개만 제공되는 상황에서 대표 이미지가 활용됩니다.'
             }
           />
         </PEInfo>
         <PEForm>
           <PEFormItemTitle
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
             onClick={() => setShowImageTooltip(!showImageTooltip)}
           >
             <TooltipWrap>
               <div>
-                <img src={process.env.PUBLIC_URL + "/tooltip.svg"} />
+                <img src={process.env.PUBLIC_URL + '/tooltip.svg'} />
               </div>
             </TooltipWrap>
           </PEFormItemTitle>
@@ -239,7 +245,7 @@ const PEDefault = (props) => {
             <ImgToolTip open={showImageTooltip}>
               <div className="image">
                 <img
-                  src={process.env.PUBLIC_URL + "/PE-tooltip-thumbnail.png"}
+                  src={process.env.PUBLIC_URL + '/PE-tooltip-thumbnail.png'}
                 />
               </div>
             </ImgToolTip>
@@ -248,7 +254,10 @@ const PEDefault = (props) => {
             <div>
               <span>
                 <i>
-                  <div name="share-1" className="Icon__SVGICON-sc-1xkf9cp-0 ccxeYs">
+                  <div
+                    name="share-1"
+                    className="Icon__SVGICON-sc-1xkf9cp-0 ccxeYs"
+                  >
                     <svg viewBox="0 0 48 48">
                       <path
                         fillRule="evenodd"
@@ -266,15 +275,24 @@ const PEDefault = (props) => {
               </p>
               <strong>※ 이미지를 등록하면 즉시 반영됩니다.</strong>
             </div>
-            <input onChange={handleImageChange} ref={thumbnailRef} type="file" accept=".jpg, .jpeg, .png" multiple/>
+            <input
+              onChange={handleImageChange}
+              ref={thumbnailRef}
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              multiple
+            />
           </ImageUploader>
           <ThumbnailWrapper>
-            {postData.thumbnails?.map(x => {
-                console.log("받아온 이미지 url들입니다.");
-                console.log(x);
-                return(
-                    <div key={x?.url} style={{backgroundImage: `url(${x?.url})`}}/>
-                )
+            {postData.thumbnails?.map((x) => {
+              console.log('받아온 이미지 url들입니다.');
+              console.log(x);
+              return (
+                <div
+                  key={x?.url}
+                  style={{ backgroundImage: `url(${x?.url})` }}
+                />
+              );
             })}
           </ThumbnailWrapper>
           {/* <PEFormInput maxLength={50}/> */}
@@ -285,18 +303,18 @@ const PEDefault = (props) => {
 };
 
 const ThumbnailWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-    div{
-        width: 10rem;
-        height: 10rem;
-        background-size: cover;
-        background-position: center;
-        border: 1px solid #eee;
-    }
-`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  div {
+    width: 10rem;
+    height: 10rem;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #eee;
+  }
+`;
 
 const ImageUploader = styled.div`
   width: 100%;
@@ -314,7 +332,8 @@ const ImageUploader = styled.div`
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
-  input[type="file"] {
+  input[type='file'] {
+    cursor: pointer;
     display: block;
     width: 100%;
     height: 100%;
@@ -379,8 +398,7 @@ const SelectorWrapper = styled.div`
   background: rgb(255, 255, 255);
   border: 1px solid rgb(240, 240, 240);
   /* appearance: none; */
-  select 
-  {
+  select {
     width: 100%;
     background: transparent;
     border: 0px;

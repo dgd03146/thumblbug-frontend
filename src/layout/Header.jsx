@@ -17,7 +17,12 @@ const Header = () => {
             </LogoWrapper>
           </Link>
           <StatusWrapper>
-            <ProjectEditorButton>프로젝트 올리기</ProjectEditorButton>
+            <Link
+              to="/project-editor/default"
+              style={{ textDecoration: 'none' }}
+            >
+              <ProjectEditorButton>프로젝트 올리기</ProjectEditorButton>
+            </Link>
             <ButtonWrapper>
               <IconWrapper>
                 <img src={'/images/like.svg'} alt="like" />
@@ -28,16 +33,18 @@ const Header = () => {
                 <img src={'/images/notification.svg'} alt="notification" />
               </IconWrapper>
             </ButtonWrapper>
-            <UserButtonWrapper>
-              <UserButton>
-                <UserAvatar>
-                  <ProfileImage>
-                    <UserName>{`임`}</UserName>
-                  </ProfileImage>
-                </UserAvatar>
-                <UserText>{`로그인/회원가입`}</UserText>
-              </UserButton>
-            </UserButtonWrapper>
+            <Link to="/signIn" style={{ textDecoration: 'none' }}>
+              <UserButtonWrapper>
+                <UserButton>
+                  <UserAvatar>
+                    <ProfileImage>
+                      <UserName>{`임`}</UserName>
+                    </ProfileImage>
+                  </UserAvatar>
+                  <UserText>{`로그인/회원가입`}</UserText>
+                </UserButton>
+              </UserButtonWrapper>
+            </Link>
           </StatusWrapper>
         </HeaderUpperLayOut>
       </HeaderWrapper>

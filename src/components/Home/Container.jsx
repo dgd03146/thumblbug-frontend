@@ -19,13 +19,6 @@ const Container = ({ onGetCategory }) => {
     // category 설정
 
     onGetCategory(categoryname, value);
-
-    // dispatch(
-    //   projectsActions.setCategory({
-    //     categoryName: categoryname,
-    //     value: value
-    //   })
-    // );
   };
 
   return (

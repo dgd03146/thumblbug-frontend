@@ -27,9 +27,6 @@ const ProjectContents = forwardRef(({ project }, ref) => {
 
   const { mutate: onFunding } = useMutation(addFundingPrice, {
     onSuccess: () => {
-      // 추가 후 캐싱된 데이터를 건드리기 위한 후처리 작업
-      // 수면 데이터 목록을 다시 불러오면 ok!
-
       // queryClient.invalidateQueries 메서드를 쓰면
       // 인수로 전달하는 key값에 대해 쿼리를 무효화해줌 => 리패칭
       // 인수를 전달하지 않으면 모든 쿼리가 무효화됨
@@ -45,10 +42,18 @@ const ProjectContents = forwardRef(({ project }, ref) => {
           className="view ql-editor"
           style={{ padding: 0 }}
           dangerouslySetInnerHTML={{
-            __html: sanitizer(`${project.plan}`, {
-              ALLOWED_TAGS: ['iframe'],
-              ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
-            })
+            __html: sanitizer(
+              `<p>하이하이</p><p>바이바이</p><p><span class="ql-size-huge">ㅇㅎㅇㅎㅇㅎ&nbsp;</span></p><p>&nbsp;</p><p>&nbsp;</p>`,
+              {
+                ALLOWED_TAGS: ['iframe'],
+                ADD_ATTR: [
+                  'allow',
+                  'allowfullscreen',
+                  'frameborder',
+                  'scrolling'
+                ]
+              }
+            )
           }}
         ></div>
       </MainColumn>

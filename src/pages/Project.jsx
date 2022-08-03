@@ -22,8 +22,9 @@ const Project = () => {
       console.log(error.res);
     }
   };
+  const queryClient = useQueryClient();
 
-  const { data } = useQuery(['project'], getProject, {});
+  const { data, refetch } = useQuery(['project'], getProject, {});
 
   useEffect(() => {
     dispatch(layoutActions.notHeaderFix()); // Header no fix
@@ -33,6 +34,11 @@ const Project = () => {
     if (data) {
       dispatch(projectsActions.setPost(data));
     }
+  }, [data]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries('project');
+    refetch();
   }, []);
 
   const rewardRef = useRef(null);

@@ -239,7 +239,7 @@ const ImageWrapper = styled.div`
 
 const StyledSlider = styled(Slider)`
   width: 100%;
-  height: 100%;
+  height: 95%;
 
   div {
     height: 100%;
@@ -257,8 +257,11 @@ const StyledSlider = styled(Slider)`
   }
 
   img {
-    width: 100%;
-    height: 100%;
+    /*FIXME: width: 100%;
+    height: 100%; */
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
   }
   @media screen and (max-width: 1440px) {
     div {

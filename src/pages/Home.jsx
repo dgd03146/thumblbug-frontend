@@ -17,7 +17,6 @@ const Home = () => {
   const queryClient = useQueryClient();
 
   const projects = useSelector((state) => state.projects.projects);
-  console.log(projects, 'projects');
 
   const [categoryName, setCategoryName] = useState('전체');
   const [value, setValue] = useState('all');

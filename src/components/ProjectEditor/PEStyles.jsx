@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 
 export const PENotice = (props) => {
   const { title, desc } = props;
@@ -11,7 +11,7 @@ export const PENotice = (props) => {
       <div className="title">
         {title}
         <div>
-          <img src={process.env.PUBLIC_URL + "/information.svg"} />
+          <img src={process.env.PUBLIC_URL + '/information.svg'} />
         </div>
       </div>
       <div>
@@ -28,55 +28,71 @@ export const PENotice = (props) => {
 export const Asterisk = (props) => {
   return (
     <AsteriskWrap>
-      <img style={{}} src={process.env.PUBLIC_URL + "/asterisk.svg"} />
+      <img style={{}} src={process.env.PUBLIC_URL + '/asterisk.svg'} />
     </AsteriskWrap>
   );
 };
 
 export const PEFormInput = (props) => {
-  const { inputRef, inputmode, maxLength, changeHandler, value, helperText, placeholder, error, type, min } =
-    props;
+  const {
+    inputRef,
+    inputmode,
+    maxLength,
+    changeHandler,
+    value,
+    helperText,
+    placeholder,
+    error,
+    type,
+    min
+  } = props;
   const [currentLength, setCurrentLength] = useState(0);
   const [focus, setFocus] = useState(false);
   return (
     <div>
       <PEInputWrapper error={error} focus={focus}>
         <span>
-          {!props.textarea && <input
-            ref={inputRef}
-            onChange={(e) => {
-              setCurrentLength(e.target.value.length);
-              changeHandler(e);
-            }}
-            onFocus={() => setFocus(true)}
-            onBlur={() => setFocus(false)}
-            type={type?type:"text"}
-            inputMode={inputmode}
-            maxLength={maxLength}
-            placeholder={placeholder}
-            min={min}
-            value={value}
-          />}
-          {props.textarea && <textarea
-          ref={inputRef}
-          onChange={(e) => {
-            setCurrentLength(e.target.value.length);
-            changeHandler(e);
-          }}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-            placeholder={placeholder}
-            maxLength={maxLength}
-            value={value}
-            />}
-          {inputmode==="numeric" && "원"}
+          {!props.textarea && (
+            <input
+              ref={inputRef}
+              onChange={(e) => {
+                setCurrentLength(e.target.value.length);
+                changeHandler(e);
+              }}
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              type={type ? type : 'text'}
+              inputMode={inputmode}
+              maxLength={maxLength}
+              placeholder={placeholder}
+              min={min}
+              value={value}
+            />
+          )}
+          {props.textarea && (
+            <textarea
+              ref={inputRef}
+              onChange={(e) => {
+                setCurrentLength(e.target.value.length);
+                changeHandler(e);
+              }}
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              placeholder={placeholder}
+              maxLength={maxLength}
+              value={value}
+            />
+          )}
+          {inputmode === 'numeric' && '원'}
         </span>
       </PEInputWrapper>
       <PEInputHelper error={error}>
         {error && <p>{helperText}</p>}
-        {!type && !inputmode && <span>
-          {currentLength}/{maxLength}
-        </span>}
+        {!type && !inputmode && (
+          <span>
+            {currentLength}/{maxLength}
+          </span>
+        )}
       </PEInputHelper>
     </div>
   );
@@ -108,7 +124,6 @@ export const PEInfoTitle = styled.dt`
     margin-bottom: 12px;
     font-size: 16px !important;
     line-height: 24px !important;
-    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
       sans-serif !important;
   }
   margin-bottom: 14px;
@@ -116,8 +131,6 @@ export const PEInfoTitle = styled.dt`
   color: rgb(61, 61, 61);
   font-size: 14px !important;
   line-height: 22px !important;
-  font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
-    sans-serif !important;
 `;
 export const PEInfoDesc = styled.dd`
   font-weight: 400;
@@ -125,8 +138,6 @@ export const PEInfoDesc = styled.dd`
   margin: 0px;
   font-size: 14px !important;
   line-height: 24px !important;
-  font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
-    sans-serif !important;
 `;
 
 export const PEForm = styled.div`
@@ -231,8 +242,6 @@ export const ImgToolTip = styled.div`
     margin-bottom: 16px;
     font-size: 12px !important;
     line-height: 20px !important;
-    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
-      sans-serif !important;
     font-weight: 700 !important;
   }
   .image {
@@ -293,9 +302,9 @@ export const PEInputWrapper = styled.div`
   background: rgb(255, 255, 255);
   padding: 0px 18px;
   border: ${(props) => {
-    if (props.error) return "1px solid rgb(244, 69, 68)";
-    else if (props.focus) return "1px solid rgb(13, 13, 13)";
-    else return "1px solid rgb(240, 240, 240)";
+    if (props.error) return '1px solid rgb(244, 69, 68)';
+    else if (props.focus) return '1px solid rgb(13, 13, 13)';
+    else return '1px solid rgb(240, 240, 240)';
   }};
   span {
     border: 1px solid rgb(230, 230, 230);
@@ -317,7 +326,8 @@ export const PEInputWrapper = styled.div`
     padding: 0px;
     background: transparent;
   }
-  input, textarea {
+  input,
+  textarea {
     width: 100%;
     background: transparent;
     border: 0px;
@@ -330,11 +340,12 @@ export const PEInputWrapper = styled.div`
     text-align: inherit;
     font-weight: 400;
     font-size: 14px !important;
+    font-family: 'Noto Sans KR', sans-serif;
     line-height: 24px !important;
   }
   textarea::-webkit-scrollbar {
-   display: none;
- }
+    display: none;
+  }
 `;
 
 export const PEInputHelper = styled.div`
@@ -350,7 +361,7 @@ export const PEInputHelper = styled.div`
   p,
   span {
     color: ${(props) =>
-      props.error ? "rgb(244, 69, 68)" : "rgb(158, 158, 158)"};
+      props.error ? 'rgb(244, 69, 68)' : 'rgb(158, 158, 158)'};
   }
   span {
     margin-left: auto;

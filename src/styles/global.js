@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     overflow-x: hidden;
     min-width: 320px;
     background: #f6f5f5;
-    font-family: 'SpoqaHanSans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    /* font-family: 'SpoqaHanSans', 'Helvetica Neue', Arial, Helvetica, sans-serif; */
     font-size: 1rem;
     line-height: 1.7em;
     background-color: rgb(255, 255, 255);

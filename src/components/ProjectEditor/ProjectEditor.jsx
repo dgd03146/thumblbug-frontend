@@ -1,83 +1,89 @@
-import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
-import { Link, useParams } from "react-router-dom";
-import "./ProjectEditor.css";
-import PEDefault from "./PEDefault";
-import PEFunding from "./PEFunding";
-import PEStory from "./PEStory";
-import PEReward from "./PEReward";
-import PECreator from "./PECreator";
-import { useSelector } from "react-redux";
-import TumblbugApis from "../../shared/api";
-import { useMutation } from "@tanstack/react-query";
+import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import { Link, useParams } from 'react-router-dom';
+import './ProjectEditor.css';
+import PEDefault from './PEDefault';
+import PEFunding from './PEFunding';
+import PEStory from './PEStory';
+import PEReward from './PEReward';
+import PECreator from './PECreator';
+import { useSelector } from 'react-redux';
+import TumblbugApis from '../../shared/api';
+import { useMutation } from '@tanstack/react-query';
 
 const ProjectEditor = (props) => {
-    const params = useParams()
-    const postData = useSelector(state => state.post.post)
-    const newPost = () => {
-        TumblbugApis.newPost(postData)
-    }
-    const {mutate} = useMutation(newPost)
-    // const images = postData.thumbnails.map(x => x?.filename)
-    const tmpImages = useSelector(state => state.post.tmpImages)
+  const params = useParams();
+  const postData = useSelector((state) => state.post.post);
+  const newPost = () => {
+    TumblbugApis.newPost(postData);
+  };
+  const { mutate } = useMutation(newPost);
+  // const images = postData.thumbnails.map(x => x?.filename)
+  const tmpImages = useSelector((state) => state.post.tmpImages);
 
-    // const 
-    useEffect(() => {
-        console.log(tmpImages);
-    }, [postData])
-    useEffect(() => {
-        return () => {
-            console.log(tmpImages);
-            TumblbugApis.deleteImages({tmpImages}).then(res => {
-                console.log("이미지 삭제 완료")
-            })
-        }
-    }, [])
+  // const
+  useEffect(() => {
+    console.log(tmpImages);
+  }, [postData]);
+  useEffect(() => {
+    return () => {
+      console.log(tmpImages);
+      TumblbugApis.deleteImages({ tmpImages }).then((res) => {
+        console.log('이미지 삭제 완료');
+      });
+    };
+  }, []);
   return (
     <PEContainer>
       <PEHeader>
         <HeaderLeft>
           <HeaderLink to="/">
             <img
-              style={{ width: "14px", height: "14px" }}
-              src={process.env.PUBLIC_URL + "/left-arrow.svg"}
+              style={{ width: '14px', height: '14px' }}
+              src={process.env.PUBLIC_URL + '/left-arrow.svg'}
             />
           </HeaderLink>
         </HeaderLeft>
         <HeaderRight>
-          <HeaderButton onClick={() => {mutate()}}>저장</HeaderButton>
+          <HeaderButton
+            onClick={() => {
+              mutate();
+            }}
+          >
+            저장
+          </HeaderButton>
         </HeaderRight>
       </PEHeader>
       <Title>프로젝트 기획</Title>
       <div
         style={{
           zIndex: 1,
-          boxShadow: "rgb(0 0 0 / 4%) 0px 1px 8px, rgb(0 0 0 / 2%) 0px 1px 0px",
+          boxShadow: 'rgb(0 0 0 / 4%) 0px 1px 8px, rgb(0 0 0 / 2%) 0px 1px 0px'
         }}
       >
         <CategoryWrapper>
           <PETabsWrapper>
-            <PETabItem selected={params.tab === "default"}>
+            <PETabItem selected={params.tab === 'default'}>
               <Link to="../project-editor/default">
                 기본정보<span>4</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={params.tab === "funding"}>
+            <PETabItem selected={params.tab === 'funding'}>
               <Link to="../project-editor/funding">
                 펀딩 계획<span>2</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={params.tab === "reward"}>
+            <PETabItem selected={params.tab === 'reward'}>
               <Link to="../project-editor/reward">
                 선물 구성<span>1</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={params.tab === "story"}>
+            <PETabItem selected={params.tab === 'story'}>
               <Link to="../project-editor/story">
                 프로젝트 계획<span>1</span>
               </Link>
             </PETabItem>
-            <PETabItem selected={params.tab === "creator"}>
+            <PETabItem selected={params.tab === 'creator'}>
               <Link to="../project-editor/creator">
                 창작자 정보<span>2</span>
               </Link>
@@ -86,11 +92,11 @@ const ProjectEditor = (props) => {
         </CategoryWrapper>
       </div>
       <PEContentContainer>
-        {params.tab == "default" && <PEDefault postData={postData}/>}
-        {params.tab == "funding" && <PEFunding postData={postData}/>}
-        {params.tab == "story" && <PEStory postData={postData}/>}
-        {params.tab == "reward" && <PEReward postData={postData}/>}
-        {params.tab == "creator" && <PECreator postData={postData}/>}
+        {params.tab == 'default' && <PEDefault postData={postData} />}
+        {params.tab == 'funding' && <PEFunding postData={postData} />}
+        {params.tab == 'story' && <PEStory postData={postData} />}
+        {params.tab == 'reward' && <PEReward postData={postData} />}
+        {params.tab == 'creator' && <PECreator postData={postData} />}
       </PEContentContainer>
     </PEContainer>
   );
@@ -202,14 +208,14 @@ const Title = styled.div`
     width: 1080px;
     font-size: 32px !important;
     line-height: 44px !important;
-    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
+    font-family: NotoSansKR, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', Arial,
       sans-serif !important;
   }
   padding: 24px 16px;
   font-weight: 700;
   font-size: 24px !important;
   line-height: 36px !important;
-  font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
+  font-family: NotoSansKR, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', Arial,
     sans-serif !important;
 `;
 const CategoryWrapper = styled.div`
@@ -246,7 +252,7 @@ const PETabItem = styled.li`
   display: flex;
   height: 100%;
   margin: 0px 8px;
-  opacity: ${props => !props.selected ? "0.3" : "1"};
+  opacity: ${(props) => (!props.selected ? '0.3' : '1')};
   &:first-child {
     margin-left: 0;
   }
@@ -254,7 +260,7 @@ const PETabItem = styled.li`
     if (props.selected) {
       return css`
         &:after {
-          content: "";
+          content: '';
           position: absolute;
           left: 0px;
           bottom: 0px;
@@ -277,7 +283,7 @@ const PETabItem = styled.li`
     opacity: 1;
     font-size: 14px !important;
     line-height: 22px !important;
-    font-family: NotoSansKR, "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial,
+    font-family: NotoSansKR, 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', Arial,
       sans-serif !important;
     font-weight: 700 !important;
     text-decoration: none;
@@ -306,6 +312,5 @@ const PEContentContainer = styled.div`
     margin: 0px auto;
   }
   padding: 48px 16px 0px;
-  
 `;
 export default ProjectEditor;

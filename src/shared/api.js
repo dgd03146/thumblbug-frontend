@@ -15,30 +15,32 @@ api.interceptors.request.use(function (config) {
 });
 
 const TumblbugApis = {
-  loginUser: (user) => api.post("/login", user),
-  signUp: (user) => api.post("/signup", user),
-  postThumbnailUpload: (formData) => api.post("/images", formData, {
-    headers: {
-        "Content-type": "multipart/form-data",
-    },                    
-  }),
-  postStoryImageUpload: (formData) => api.post("/images", formData, {
-    headers: {
-      "Content-type": "multipart/form-data",
-    },               
-  }),
-  deleteImages: (images) => api.delete("/images", images),
-  newPost: (post) => api.post("/projects", post)
-}
+  loginUser: (user) => api.post('/login', user),
+  signUp: (user) => api.post('/signup', user),
+  postThumbnailUpload: (formData) =>
+    api.post('/images', formData, {
+      headers: {
+        'Content-type': 'multipart/form-data'
+      }
+    }),
+  postStoryImageUpload: (formData) =>
+    api.post('/images', formData, {
+      headers: {
+        'Content-type': 'multipart/form-data'
+      }
+    }),
+  deleteImages: (images) => api.delete('/images', images),
+  newPost: (post) => api.post('/projects', post)
+};
 
 export const projectsApi = {
   // home 페이지에 모든 프로젝트 받기
-  projectsAll: (category) => api.get(`/api/projects?category=${category}`), // FIXME: /api/projects?category=${category}&sort=${sort}
+  projectsAll: (category) => api.get(`/projects?category=${category}`), // FIXME: /api/projects?category=${category}&sort=${sort}
 
   // 상세 페이지에 프로젝트 가져오기
-  projectDetail: (projectId) => api.get(`/api/projects/${projectId}`), // FIXME: /api/projects/{projectId}
+  projectDetail: (projectId) => api.get(`/projects/${projectId}`), // FIXME: /api/projects/{projectId}
 
-  rewardPost: (reward) => api.post('/api/funds', reward)
+  rewardPost: (reward) => api.post('/funds', reward)
 };
 
-export default TumblbugApis
+export default TumblbugApis;
