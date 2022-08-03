@@ -2,6 +2,10 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: `${process.env.REACT_APP_API_SERVER}/api`,
+  headers: {
+    'content-type': 'application/json;charset=UTF-8',
+    accept: 'application/json,'
+  }
 });
 
 api.interceptors.request.use(function (config) {
@@ -27,7 +31,14 @@ const TumblbugApis = {
   newPost: (post) => api.post("/projects", post)
 }
 
+export const projectsApi = {
+  // home 페이지에 모든 프로젝트 받기
+  projectsAll: (category) => api.get(`/api/projects?category=${category}`), // FIXME: /api/projects?category=${category}&sort=${sort}
 
-export const authApi = {};
+  // 상세 페이지에 프로젝트 가져오기
+  projectDetail: (projectId) => api.get(`/api/projects/${projectId}`), // FIXME: /api/projects/{projectId}
+
+  rewardPost: (reward) => api.post('/api/funds', reward)
+};
 
 export default TumblbugApis
