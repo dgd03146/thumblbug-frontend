@@ -1,18 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useInview } from 'react-intersection-observer';
 import styled from 'styled-components';
 import HomeWrapper from '../components/Home/HomeWrapper';
 import { layoutActions } from '../redux/layout-slice';
 import { projectsApi } from '../shared/api';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery
+} from '@tanstack/react-query';
 import { projectsActions } from '../redux/projects-slice';
 
+// TODO: 무한 스크롤 react query로 구현
+const getProjectsLists = async (pageParam) => {
+  // const res = await projectsApi.projectsAll(value, sort, query);
+  // const { projects, isLast } = res.data;
+  // return { projects, nextPage: pageParam + 1, isLast };
+};
+
 const Home = () => {
+  // TODO: 무한 스크롤
+  // const { ref, inView } = useInview();
+  // const { data, status, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  //   "projects",
+  //   ({ pageParam = 1 }) => getProjectsLists(pageParam),
+  //   {
+  //     getNextPageParam: (lastPage) =>
+  //       !lastPage.isLast ? lastPage.nextPage : undefined,
+  //   }
+  // );
+  // useEffect(() => {
+  //   if (inView) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView]);
+
+  // if(status==='loading') return <Loading/>
+  // if(status==='error') return <ErrorPage/>
+
   const dispatch = useDispatch();
 
   // const isHeaderFixed = useSelector((state) => state.layout.headerFixed); // 홈에서만 헤더 고정
-
-  // FIXME: const sort = useSelector((state) => state.projects.sort.value);
 
   const queryClient = useQueryClient();
 
@@ -22,8 +51,8 @@ const Home = () => {
   const [query, setQuery] = useState('');
 
   const onGetCategory = (value) => {
-    // setCategoryName(categoryname);
     setValue(value);
+    setQuery('');
   };
 
   const onSort = (value) => {
@@ -34,16 +63,14 @@ const Home = () => {
     setQuery(query);
   };
 
-  const getProjectsCategory = async () => {
-    // FIXME: projectsAll에 sort 인자로 전해줘야함
-    // console.log(value, '함수 안');
-
+  const getProjects = async () => {
     const { data } = await projectsApi.projectsAll(value, sort, query);
+
     return data;
   };
 
   const { data, refetch } = useQuery(['projects_category'], () =>
-    getProjectsCategory()
+    getProjects()
   );
 
   useEffect(() => {

@@ -38,7 +38,7 @@ const HomeWrapper = ({ onGetCategory, onSearch, onSort }) => {
 
   const handleSearch = () => {
     onSearch(inputRef.current.value);
-    // inputRef.current.value = '';
+    inputRef.current.value = '';
   };
 
   const handleshowSort = () => {
@@ -123,9 +123,7 @@ const CategoryWrapper = styled.div`
   padding: 0 10px;
 
   /* padding: 0 1rem; */
-  & :hover {
-    font-weight: 700;
-  }
+
   > div {
     display: flex;
   }
