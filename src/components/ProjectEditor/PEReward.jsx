@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import styled from 'styled-components';
 import {
   Asterisk,
   PEForm,
@@ -8,52 +8,59 @@ import {
   PEInfoDesc,
   PEInfoTitle,
   PEItemWrapper,
-  PEFormInput,
-} from "./PEStyles";
-import moment from "moment";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { useDispatch } from "react-redux";
-import { setRewards } from "../../redux/newPostSlice";
+  PEFormInput
+} from './PEStyles';
+import moment from 'moment';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { useDispatch } from 'react-redux';
+import { setRewards } from '../../redux/newPostSlice';
 
 const PEReward = (props) => {
-    const {postData} = props
-    const [rewardItem, setRewardItem] = useState()
-    const [fundingPrice, setFundingPrice] = useState()
-    const dispatch = useDispatch()
+  const { postData } = props;
+  const [rewardItem, setRewardItem] = useState();
+  const [fundingPrice, setFundingPrice] = useState();
+  const dispatch = useDispatch();
 
-    const rewardItemRef = useRef()
-    const fundingPriceRef = useRef()
+  const rewardItemRef = useRef();
+  const fundingPriceRef = useRef();
 
-    const handleRewardItem = (e) => {
-        setRewardItem(e.target.value)
-    }
-    const handleFundingPrice = (e) => {
-        setFundingPrice(e.target.value.replace(/[^0-9\\.]+/g, ""))
-    }
+  const handleRewardItem = (e) => {
+    setRewardItem(e.target.value);
+  };
+  const handleFundingPrice = (e) => {
+    setFundingPrice(e.target.value.replace(/[^0-9\\.]+/g, ''));
+  };
 
-    console.log(postData?.rewards);
-    useEffect(() => {
-        console.log(postData?.title);
-        console.log(rewardItem, fundingPrice);
-    }, [rewardItem, fundingPrice])
+  console.log(postData?.rewards);
+  useEffect(() => {
+    console.log(postData?.title);
+    console.log(rewardItem, fundingPrice);
+  }, [rewardItem, fundingPrice]);
   return (
     <>
       <PEItemWrapper>
-        <PEInfo style={{ position: "sticky", top: "0" }}>
+        <PEInfo style={{ position: 'sticky', top: '0' }}>
           <PEInfoTitle>
             내가 만든 선물
             <Asterisk />
           </PEInfoTitle>
           <RewardList>
-            {postData?.rewards.map(x => {return (<li>
-              <div>
-                <strong>{x.fundingPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</strong>
-                <span>{x.rewardItem}</span>
-              </div>
-            </li>
-            )})}
-            
+            {postData?.rewards.map((x) => {
+              return (
+                <li key={x}>
+                  <div>
+                    <strong>
+                      {x.fundingPrice
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      원
+                    </strong>
+                    <span>{x.rewardItem}</span>
+                  </div>
+                </li>
+              );
+            })}
           </RewardList>
         </PEInfo>
         <PEForm>
@@ -68,23 +75,45 @@ const PEReward = (props) => {
                 금액대로 여러 개의 선물을 만들어주세요. 펀딩 성공률이 높아지고,
                 더 많은 후원 금액을 모금할 수 있어요.
               </PEInfoDesc>
-              <PEFormItemTitle style={{ marginTop: "1em" }}>
+              <PEFormItemTitle style={{ marginTop: '1em' }}>
                 선물 아이템
               </PEFormItemTitle>
-              <PEFormInput maxLength={50} inputRef={rewardItemRef} changeHandler={handleRewardItem}/>
+              <PEFormInput
+                maxLength={50}
+                inputRef={rewardItemRef}
+                changeHandler={handleRewardItem}
+              />
               <PEFormItemTitle>최소 후원 금액</PEFormItemTitle>
-              <PEFormInput value={fundingPrice} inputmode={"numeric"} inputRef={fundingPriceRef} changeHandler={handleFundingPrice}/>
+              <PEFormInput
+                value={fundingPrice}
+                inputmode={'numeric'}
+                inputRef={fundingPriceRef}
+                changeHandler={handleFundingPrice}
+              />
               <ButtonWrapper>
-                <button onClick={() => {
-                    rewardItemRef.current.value = ""
-                    fundingPriceRef.current.value = ""
-                }}>초기화</button>
-                <button onClick={() => {
-                    dispatch(setRewards([...postData.rewards, {
-                        rewardItem: rewardItemRef.current.value,
-                        fundingPrice: Number(fundingPriceRef.current.value)
-                    }]))
-                }}>저장</button>
+                <button
+                  onClick={() => {
+                    rewardItemRef.current.value = '';
+                    fundingPriceRef.current.value = '';
+                  }}
+                >
+                  초기화
+                </button>
+                <button
+                  onClick={() => {
+                    dispatch(
+                      setRewards([
+                        ...postData.rewards,
+                        {
+                          rewardItem: rewardItemRef.current.value,
+                          fundingPrice: Number(fundingPriceRef.current.value)
+                        }
+                      ])
+                    );
+                  }}
+                >
+                  저장
+                </button>
               </ButtonWrapper>
             </div>
           </MakeRewardWrapper>

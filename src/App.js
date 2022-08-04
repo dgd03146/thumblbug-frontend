@@ -10,13 +10,22 @@ import ProjectEditor from './components/ProjectEditor/ProjectEditor';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import { authActions } from './redux/auth-slice';
 import Container from './layout/Container';
 import Home from './pages/Home';
 import GlobalStyle from './styles/global';
 import Project from './pages/Project';
+import { useDispatch } from 'react-redux';
+import jwtDecode from 'jwt-decode';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
+      dispatch(authActions.userLogin(jwtDecode(token).NAME));
+    }
+  }, []);
   return (
     <div className="App">
       <ThemeProvider theme={theme}>

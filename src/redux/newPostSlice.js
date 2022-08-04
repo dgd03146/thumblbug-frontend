@@ -1,25 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const newPostSlice = createSlice({
-  name: "newpost",
+  name: 'newpost',
   initialState: {
     post: {
-      category: "game",
-      summary: "",
-      title: "",
-      thumbnails: new Array(),
-      goal: "",
-      startDate: "",
-      endDate: "",
+      category: 'game',
+      summary: '',
+      title: '',
+      thumbnails: [],
+      goal: '',
+      startDate: '',
+      endDate: '',
       rewards: [
         {
-          rewardItem: "선물없이 후원하기",
-          fundingPrice: 1000,
-        },
+          rewardItem: '선물없이 후원하기',
+          fundingPrice: 1000
+        }
       ],
-      plan: "",
-      creatorName: "",
-      creatorBiography: "",
+      plan: '',
+      creatorName: '',
+      creatorBiography: ''
     },
     tmpImages: []
   },
@@ -60,11 +60,11 @@ const newPostSlice = createSlice({
     setCreatorBiography(state, action) {
       state.post.creatorBiography = action.payload;
     },
-    setTmpImage(state, action){
-        state.tmpImages = [...state.tmpImages, action.payload]
+    setTmpImage(state, action) {
+      state.tmpImages = [...state.tmpImages, action.payload];
     }
   },
-  extraReducers: {},
+  extraReducers: {}
 });
 
 export default newPostSlice.reducer;
