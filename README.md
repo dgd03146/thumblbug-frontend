@@ -8,7 +8,6 @@
 
 [프로젝트 링크](http://tumblbug-clone.s3-website.ap-northeast-2.amazonaws.com/)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/46e2e802-354b-4ea2-aef0-24f576520469/Untitled.png)
 
 ## 🎬시연 영상
 
