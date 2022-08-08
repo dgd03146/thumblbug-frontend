@@ -26,8 +26,9 @@ const Project = () => {
   };
   const queryClient = useQueryClient();
 
-  const { data, refetch } = useQuery(['project'], getProject, {
-    suspense: true
+  const { data, refetch } = useQuery(['project', projectId], getProject, {
+    suspense: true,
+    cacheTime: 0
   });
 
   // useEffect(() => {
@@ -35,12 +36,13 @@ const Project = () => {
   // }, []);
 
   useEffect(() => {
-    refetch();
-    queryClient.invalidateQueries('project');
+    // refetch();
+    // FIXME:queryClient.invalidateQueries('project'); 최신 데이터를 refetch 보통은 useMutation
   }, []);
 
   useEffect(() => {
     if (data) {
+      console.log(data, 'data');
       dispatch(projectsActions.setPost(data));
     }
   }, [data]);

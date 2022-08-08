@@ -9,7 +9,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import LoadingSpinner from './layout/LodingSpinner';
+import LoadingSpinner from './layout/LoadingSpinner';
 
 const queryClient = new QueryClient({
   defaultOptions: {

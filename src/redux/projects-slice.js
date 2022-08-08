@@ -2,16 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   projects: [],
-  project: {},
-  category: {
-    categoryName: '전체',
-    value: 'all'
-  },
-
-  sort: {
-    sortName: '인기순',
-    value: 'popular'
-  }
+  project: {}
 };
 
 const projectsSlice = createSlice({

@@ -35,8 +35,10 @@ const TumblbugApis = {
 
 export const projectsApi = {
   // home 페이지에 모든 프로젝트 받기
-  projectsAll: (category, sort, query) =>
-    api.get(`/projects?category=${category}&sort=${sort}&query=${query}`), // FIXME: /api/projects?category=${category}&sort=${sort}
+  projectsAll: (page, category, sort, query) =>
+    api.get(
+      `/projects?page=${page}&size=16&category=${category}&sort=${sort}&query=${query}`
+    ), // FIXME: /api/projects?category=${category}&sort=${sort}
 
   // 상세 페이지에 프로젝트 가져오기
   projectDetail: (projectId) => api.get(`/projects/${projectId}`), // FIXME: /api/projects/{projectId}
