@@ -20,7 +20,11 @@
 ## **🔨 사용 기술 및 라이브러리**
 
 - React
-- 
+- React Query
+- Redux-toolkit
+- Toast UI
+- S3
+- Notion
 
 <br/>
 
