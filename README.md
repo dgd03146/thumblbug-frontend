@@ -1,4 +1,4 @@
-# 텀블벅
+# tumblbug
 
 ![](https://www.notion.so/image/https%3A%2F%2Ftumblbug-assets.imgix.net%2Fbrand%2Ftumblbug_introduction.png?table=block&id=256d08cd-3a8d-43c4-ad95-5cf40f8c83a3&spaceId=0506af35-6b8b-4c06-9c1c-7fe328d8aee6&width=2000&userId=17d0a86e-5f6e-4097-afd6-b83dc90e98d3&cache=v2)
 
