@@ -11,7 +11,7 @@ Cloned Tumblebug Site, a funding community site that sponsors and sponsors vario
 
 ## 🎬 Demonstration video
 
-[Link to YouTube demonstration] (https://www.youtube.com/watch?v=pitNSMnWOXs)
+[Demonstration Link] (https://www.youtube.com/watch?v=pitNSMnWOXs)
 
 ## 📅 Project Period
 
