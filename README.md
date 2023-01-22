@@ -11,7 +11,7 @@ Cloned Tumblebug Site, a funding community site that sponsors and sponsors vario
 
 ## 🎬 Demonstration video
 
-[Demonstration Link] (https://www.youtube.com/watch?v=pitNSMnWOXs)
+[Demonstration Link](https://www.youtube.com/watch?v=pitNSMnWOXs)
 
 ## 📅 Project Period
 
@@ -19,12 +19,12 @@ July 28th, 2022 to August 4th, 2022
 
 ## **🔨 Usage Technology and Library**
 
-- - React
-- - React Query
-- - Redux-toolkit
-- - Toast UI
-- - S3
-- - Notion
+- React
+- React Query
+- Redux-toolkit
+- Toast UI
+- S3
+- Notion
 
 <br/>
 
